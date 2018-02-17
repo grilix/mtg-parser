@@ -3,7 +3,7 @@
 
 #include "effect.h"
 
-enum fl_ability_type
+enum AbilityType
 {
   ABILITY_STATIC,
   ABILITY_TRIGGERED,
@@ -11,22 +11,22 @@ enum fl_ability_type
   ABILITY_SPELL
 };
 
-struct st_ability
+struct Ability
 {
-  enum fl_ability_type type;
-  struct st_effect *effect;
+  enum AbilityType type;
+  struct Effect *effect;
 
-  struct st_ability *prev;
-  struct st_ability *next;
+  struct Ability *prev;
+  struct Ability *next;
 };
 
-  struct st_ability *
-create_static_ability(struct st_effect *effect);
+  struct Ability *
+ability_create_static(struct Effect *effect);
 
   void
-debug_ability(struct st_ability *ability);
+ability_debug(struct Ability *last_ability);
 
   void
-free_abilities(struct st_ability *ability);
+ability_free(struct Ability *last_ability);
 
 #endif

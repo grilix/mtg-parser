@@ -3,24 +3,26 @@
 
 #include "rules.h"
 
-struct st_card
+struct Card
 {
-  struct st_rule *rule_list;
+  struct Rule *last_rule;
 };
 
-  struct st_card *
-init_card(void);
+  struct Card *
+card_init(void);
+
+/* Add a list of abilities as a new rule.
+ */
+  void
+card_add_ability_set(struct Card *card, struct Ability *last_ability);
 
   void
-add_card_empty_rule(struct st_card *card);
+card_add_rule(struct Card *card, struct Rule *last_rule);
 
   void
-add_card_rule(struct st_card *card, struct st_rule *rule);
+card_debug(struct Card *card);
 
   void
-debug_card(struct st_card *card);
-
-  void
-free_card(struct st_card *card);
+card_free(struct Card *card);
 
 #endif

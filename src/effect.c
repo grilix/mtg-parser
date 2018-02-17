@@ -4,11 +4,11 @@
 #include "effect.h"
 #include "objective.h"
 
-  struct st_effect *
-create_destroy_effect(struct st_objective *source,
-                      struct st_objective *objective)
+  struct Effect *
+effect_create_destroy(struct Objective *source,
+                      struct Objective *objective)
 {
-  INIT_PTR(struct st_effect, effect);
+  INIT_PTR(struct Effect, effect);
 
   effect->source = source;
   effect->objective = objective;
@@ -17,8 +17,8 @@ create_destroy_effect(struct st_objective *source,
   return effect;
 }
 
-  char *
-effect_type_str(enum fl_effect_type type)
+  static char *
+_effect_type_str(enum EffectType type)
 {
   switch (type) {
   case EFFECT_DESTROY:
@@ -27,33 +27,33 @@ effect_type_str(enum fl_effect_type type)
 }
 
   void
-debug_effect(struct st_effect *effect)
+effect_debug(struct Effect *effect)
 {
-  printf("Effect(%s/", effect_type_str(effect->type));
+  printf("Effect(%s/", _effect_type_str(effect->type));
 
   if (effect->source == NULL)
     printf("<no source>");
   else
-    debug_objective(effect->source);
+    objective_debug(effect->source);
 
   printf("->");
 
   if (effect->objective == NULL)
     printf("<no objective>");
   else
-    debug_objective(effect->objective);
+    objective_debug(effect->objective);
 
   printf(")");
 }
 
   void
-free_effect(struct st_effect *effect)
+effect_free(struct Effect *effect)
 {
   if (effect->source != NULL)
-    free_objective(effect->source);
+    objective_free(effect->source);
 
   if (effect->objective != NULL)
-    free_objective(effect->objective);
+    objective_free(effect->objective);
 
   free(effect);
 }

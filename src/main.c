@@ -5,20 +5,20 @@
 #include "card.h"
 
   extern int
-yyparse(struct st_card *current_card);
+yyparse(struct Card *current_card);
 
   int
 main(void)
 {
-  struct st_card *card = init_card();
+  struct Card *card = card_init();
 
   if (yyparse(card) == 0)
   {
-    debug_card(card);
+    card_debug(card);
     printf("\n");
   }
 
-  free_card(card);
+  card_free(card);
 
   return 0;
 }

@@ -1,26 +1,26 @@
 #ifndef OBJECTIVE_H
 #define OBJECTIVE_H
 
-enum fl_objective
+enum ObjectiveType
 {
   OBJECTIVE_SIMPLE,
   OBJECTIVE_TARGET,
   OBJECTIVE_ABILITY
 };
 
-struct st_objective
+struct Objective
 {
-  enum fl_objective flags;
+  enum ObjectiveType flags;
   char *text;
 };
 
-  struct st_objective *
-create_objective(enum fl_objective flags, char *text);
+  struct Objective *
+objective_create(enum ObjectiveType flags, char *text);
 
   void
-debug_objective(struct st_objective *objective);
+objective_debug(struct Objective *objective);
 
   void
-free_objective(struct st_objective *objective);
+objective_free(struct Objective *objective);
 
 #endif

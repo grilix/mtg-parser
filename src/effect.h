@@ -1,27 +1,27 @@
 #ifndef EFFECT_H
 #define EFFECT_H
 
-enum fl_effect_type
+enum EffectType
 {
   EFFECT_DESTROY
 };
 
-struct st_effect
+struct Effect
 {
-  struct st_objective *source;
-  struct st_objective *objective;
+  struct Objective *source;
+  struct Objective *objective;
 
-  enum fl_effect_type type;
+  enum EffectType type;
 };
 
-  struct st_effect *
-create_destroy_effect(struct st_objective *source,
-                      struct st_objective *objective);
+  struct Effect *
+effect_create_destroy(struct Objective *source,
+                      struct Objective *objective);
 
   void
-debug_effect(struct st_effect *effect);
+effect_debug(struct Effect *effect);
 
   void
-free_effect(struct st_effect *effect);
+effect_free(struct Effect *effect);
 
 #endif

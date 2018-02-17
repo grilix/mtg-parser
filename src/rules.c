@@ -4,12 +4,12 @@
 #include "common.h"
 #include "rules.h"
 
-  struct st_rule *
-init_rule(void)
+  struct Rule *
+rule_init(void)
 {
-  INIT_PTR(struct st_rule, rule);
+  INIT_PTR(struct Rule, rule);
 
-  rule->ability_list = NULL;
+  rule->last_ability = NULL;
   rule->next = NULL;
   rule->prev = NULL;
   rule->text = NULL;
@@ -17,63 +17,47 @@ init_rule(void)
   return rule;
 }
 
-  struct st_rule *
-start_new_rule(struct st_rule *rule)
+  void
+rule_add_ability(struct Rule *rule, struct Ability *last_ability)
 {
-  START("start_new_rule");
-
-  struct st_rule *n_rule = &(struct st_rule) {};
-
-  if (!rule->text)
+  if (rule->last_ability)
   {
-    rule->text = "first";
+    rule->last_ability->next = last_ability;
+    last_ability->prev = rule->last_ability;
   }
 
-  n_rule->prev = rule;
-  rule->next = n_rule;
-
-  return n_rule;
+  rule->last_ability = last_ability;
 }
 
   void
-add_rule_ability(struct st_rule *rule, struct st_ability *ability)
+rule_debug(struct Rule *last_rule)
 {
-  if (rule->ability_list)
-  {
-    rule->ability_list->next = ability;
-    ability->prev = rule->ability_list;
+  if (last_rule->prev != NULL) {
+    rule_debug(last_rule->prev);
+    printf(",");
   }
-
-  rule->ability_list = ability;
-}
-
-  void
-debug_rules(struct st_rule *rule)
-{
-  if (rule->prev != NULL)
-    debug_rules(rule->prev);
 
   printf("Rule(");
 
-  if (rule->ability_list == NULL)
+  if (last_rule->last_ability == NULL)
     printf("<no ability>");
   else
-    debug_ability(rule->ability_list);
+    ability_debug(last_rule->last_ability);
 
   printf(")");
 }
 
   void
-free_rules(struct st_rule *rule)
+rule_free(struct Rule *last_rule)
 {
-  if (rule->prev != NULL)
-    free_rules(rule->prev);
+  if (last_rule->prev != NULL)
+    rule_free(last_rule->prev);
 
-  if (rule->ability_list != NULL)
-    free_abilities(rule->ability_list);
+  if (last_rule->last_ability != NULL)
+    ability_free(last_rule->last_ability);
 
-  if (rule->text != NULL)
-    free(rule->text);
+  if (last_rule->text != NULL)
+    free(last_rule->text);
 
-  free(rule);
+  free(last_rule);
 }

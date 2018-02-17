@@ -5,54 +5,55 @@
 #include "card.h"
 #include "rules.h"
 
-  struct st_card *
-init_card(void)
+  struct Card *
+card_init(void)
 {
-  INIT_PTR(struct st_card, card);
+  INIT_PTR(struct Card, card);
 
-  card->rule_list = 0;
+  card->last_rule = 0;
 
   return card;
 }
 
   void
-add_card_rule(struct st_card *card, struct st_rule *rule)
+card_add_rule(struct Card *card, struct Rule *rule)
 {
-  if (card->rule_list != NULL)
+  if (card->last_rule != NULL)
   {
-    card->rule_list->next = rule;
-    rule->prev = card->rule_list;
+    card->last_rule->next = rule;
+    rule->prev = card->last_rule;
   }
   else
     rule->prev = NULL;
 
-  card->rule_list = rule;
+  card->last_rule = rule;
 }
 
   void
-add_card_empty_rule(struct st_card *card)
+card_add_ability_set(struct Card *card, struct Ability *last_ability)
 {
-  add_card_rule(card, init_rule());
+  card_add_rule(card, rule_init());
+  card->last_rule->last_ability = last_ability;
 }
 
   void
-debug_card(struct st_card *card)
+card_debug(struct Card *card)
 {
   printf("Card(");
 
-  if (card->rule_list == NULL)
+  if (card->last_rule == NULL)
     printf("<no rules>");
   else
-    debug_rules(card->rule_list);
+    rule_debug(card->last_rule);
 
   printf(")");
 }
 
   void
-free_card(struct st_card *card)
+card_free(struct Card *card)
 {
-  if (card->rule_list != NULL)
-    free_rules(card->rule_list);
+  if (card->last_rule != NULL)
+    rule_free(card->last_rule);
 
   free(card);
 }

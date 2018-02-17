@@ -3,27 +3,24 @@
 
 #include "ability.h"
 
-struct st_rule
+struct Rule
 {
   char *text;
-  struct st_ability *ability_list;
-  struct st_rule *next;
-  struct st_rule *prev;
+  struct Ability *last_ability;
+  struct Rule *next;
+  struct Rule *prev;
 };
 
-  struct st_rule *
-init_rule(void);
-
-  struct st_rule *
-start_new_rule(struct st_rule *rule);
+  struct Rule *
+rule_init(void);
 
   void
-add_rule_ability(struct st_rule *rule, struct st_ability *ability);
+add_rule_ability(struct Rule *rule, struct Ability *last_ability);
 
   void
-debug_rules(struct st_rule *rule);
+rule_debug(struct Rule *last_rule);
 
   void
-free_rules(struct st_rule *rule);
+rule_free(struct Rule *last_rule);
 
 #endif

@@ -4,10 +4,10 @@
 #include "effect.h"
 #include "ability.h"
 
-  struct st_ability *
-create_static_ability(struct st_effect *effect)
+  struct Ability *
+ability_create_static(struct Effect *effect)
 {
-  INIT_PTR(struct st_ability, ability);
+  INIT_PTR(struct Ability, ability);
 
   ability->type = ABILITY_STATIC;
   ability->effect = effect;
@@ -16,31 +16,31 @@ create_static_ability(struct st_effect *effect)
 }
 
   void
-debug_ability(struct st_ability *ability)
+ability_debug(struct Ability *last_ability)
 {
-  if (ability->prev != NULL) {
-    debug_ability(ability->prev);
+  if (last_ability->prev != NULL) {
+    ability_debug(last_ability->prev);
     printf(",");
   }
 
   printf("Ability(");
 
-  if (ability->effect == NULL)
+  if (last_ability->effect == NULL)
     printf("<no effect>");
   else
-    debug_effect(ability->effect);
+    effect_debug(last_ability->effect);
 
   printf(")");
 }
 
   void
-free_abilities(struct st_ability *ability)
+ability_free(struct Ability *last_ability)
 {
-  if (ability->prev != NULL)
-    free_abilities(ability->prev);
+  if (last_ability->prev != NULL)
+    ability_free(last_ability->prev);
 
-  if (ability->effect != NULL)
-    free_effect(ability->effect);
+  if (last_ability->effect != NULL)
+    effect_free(last_ability->effect);
 
-  free(ability);
+  free(last_ability);
 }

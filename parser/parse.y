@@ -9,34 +9,39 @@
 
 extern int yylex(void);
 
-int yyerror(struct st_card * card, char *s);
+int yyerror(struct Card * card, char *s);
 %}
 
-%parse-param {struct st_card * card}
+%parse-param {struct Card * card}
 
 %token <string> NEWLINE SEMICOLON COLON DOT DESTROY ARTIFACT LAND ENCHANTMENT TARGET CREATURE
 
 %union {
-  struct st_rule *r_rule;
-  struct st_objective *r_objective;
-  struct st_effect *r_effect;
-  struct st_ability *r_ability;
+  struct Rule *r_rule;
+  struct Objective *r_objective;
+  struct Effect *r_effect;
+  struct Ability *r_ability;
   char *string;
 }
 
+%type <r_rule> rule rules
 %type <r_objective> objective
-%type <r_effect> effect destroy
+%type <r_effect> effect
 %type <r_ability> abilities_list ability
 %type <string> objective1
 
 %%
+rules: rule
+     | rules NEWLINE
+     | rules NEWLINE rule
+     { }
+     ;
+
 rule: abilities_list
     {
-      add_card_empty_rule(card);
-
-      add_rule_ability(card->rule_list, $1);
-    };
-
+      card_add_ability_set(card, $1);
+    }
+    ;
 abilities_list: abilities_list SEMICOLON ability
               {
                 //TODO: ?
@@ -50,38 +55,33 @@ abilities_list: abilities_list SEMICOLON ability
               }
               ;
 
-ability: effect DOT NEWLINE
+ability: effect DOT
        /* spell ability */
        {
-         //$$ = create_spell_ability($1);
-         $$ = create_static_ability($1);
+         $$ = ability_create_static($1);
        }
        | effect
        /* static ability */
        {
-         $$ = create_static_ability($1);
-       };
+         $$ = ability_create_static($1);
+       }
+       ;
 
-effect: destroy
+effect: DESTROY objective
       {
-        $$ = $1;
-      };
-
-destroy: DESTROY objective
-      {
-        $$ = create_destroy_effect(
-          create_objective(OBJECTIVE_ABILITY, "card"),
+        $$ = effect_create_destroy(
+          objective_create(OBJECTIVE_ABILITY, "card"),
           $2
         );
       };
 
 objective: TARGET objective1
          {
-            $$ = create_objective(OBJECTIVE_TARGET, $2);
+           $$ = objective_create(OBJECTIVE_TARGET, $2);
          }
          | objective1
          {
-            $$ = create_objective(OBJECTIVE_SIMPLE, $1);
+           $$ = objective_create(OBJECTIVE_SIMPLE, $1);
          };
 
 objective1: CREATURE
@@ -91,6 +91,6 @@ objective1: CREATURE
 
 %%
 
-int yyerror(struct st_card *_error_card, char *msg) {
-  return fprintf(stderr, "YACC: %s\n", msg);
+int yyerror(struct Card *_error_card, char *msg) {
+  return fprintf(stderr, "YACC: %s.\n", msg);
 }
