@@ -20,13 +20,7 @@ rule_init(void)
   void
 rule_add_ability(struct Rule *rule, struct Ability *last_ability)
 {
-  if (rule->last_ability)
-  {
-    rule->last_ability->next = last_ability;
-    last_ability->prev = rule->last_ability;
-  }
-
-  rule->last_ability = last_ability;
+  APPEND(rule->last_ability, last_ability);
 }
 
   void

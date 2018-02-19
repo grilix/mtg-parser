@@ -5,38 +5,43 @@
 #include "objective.h"
 
   struct Effect *
-effect_create_destroy(struct Objective *source,
-                      struct Objective *objective)
+effect_create_destroy(struct Objective *objective)
 {
   INIT_PTR(struct Effect, effect);
 
-  effect->source = source;
   effect->objective = objective;
   effect->type = EFFECT_DESTROY;
 
   return effect;
 }
 
+  struct Effect *
+effect_create_sacrifice(struct Objective *objective)
+{
+  INIT_PTR(struct Effect, effect);
+
+  effect->objective = objective;
+  effect->type = EFFECT_SACRIFICE;
+
+  return effect;
+}
+
   static char *
-_effect_type_str(enum EffectType type)
+_debug_effect_type(enum EffectType type)
 {
   switch (type) {
   case EFFECT_DESTROY:
-    return "destroy";
+    printf("destroy:");
+    break;
   }
 }
 
   void
 effect_debug(struct Effect *effect)
 {
-  printf("Effect(%s/", _effect_type_str(effect->type));
+  printf("Effect(");
 
-  if (effect->source == NULL)
-    printf("<no source>");
-  else
-    objective_debug(effect->source);
-
-  printf("->");
+  _debug_effect_type(effect->type);
 
   if (effect->objective == NULL)
     printf("<no objective>");
@@ -49,9 +54,6 @@ effect_debug(struct Effect *effect)
   void
 effect_free(struct Effect *effect)
 {
-  if (effect->source != NULL)
-    objective_free(effect->source);
-
   if (effect->objective != NULL)
     objective_free(effect->objective);
 

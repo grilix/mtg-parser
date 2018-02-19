@@ -5,33 +5,36 @@
 #include "objective.h"
 
   struct Objective *
-objective_create(enum ObjectiveType flags, char *text) // text: TODO
+objective_create(enum ObjectiveType flags, char *text)
 {
   INIT_PTR(struct Objective, objective);
 
   COPY_STR(text, objective->text);
-  objective->flags = flags;
+  objective->type = flags;
 
   return objective;
 }
   static char *
-_objective_flags_str(enum ObjectiveType type)
+_debug_objective_type(enum ObjectiveType type)
 {
-  switch (type) {
-  case OBJECTIVE_SIMPLE:
-    return "-";
+  switch (type)
+  {
   case OBJECTIVE_TARGET:
-    return "target";
-  case OBJECTIVE_ABILITY:
-    return "ability";
+    return "target:";
   }
+
+  return "";
 }
 
   void
 objective_debug(struct Objective *objective)
 {
-  printf("Objective(%s/%s)", _objective_flags_str(objective->flags),
-                             objective->text);
+  printf("Objective(%s", _debug_objective_type(objective->type));
+
+  if (objective->text != NULL)
+    printf("%s", objective->text);
+
+  printf(")");
 }
 
   void

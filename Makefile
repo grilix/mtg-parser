@@ -3,7 +3,7 @@ YFLAGS  = -d
 parser_objs = parser/parse.o parser/parse.h parser/scan.o
 objects = $(parser_objs) \
 		src/card.o src/rules.o src/objective.o src/effect.o \
-		src/ability.o \
+		src/ability.o src/cost.o \
 		src/main.o
 
 name = magic-parser

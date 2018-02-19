@@ -4,13 +4,12 @@
 enum ObjectiveType
 {
   OBJECTIVE_SIMPLE,
-  OBJECTIVE_TARGET,
-  OBJECTIVE_ABILITY
+  OBJECTIVE_TARGET
 };
 
 struct Objective
 {
-  enum ObjectiveType flags;
+  enum ObjectiveType type;
   char *text;
 };
 
