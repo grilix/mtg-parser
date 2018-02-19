@@ -7,6 +7,7 @@
 #include "../src/effect.h"
 #include "../src/ability.h"
 #include "../src/cost.h"
+#include "../src/syntax.h"
 
 extern int yylex(void);
 
@@ -130,6 +131,7 @@ objective: TARGET OBJECTIVE
 
 %%
 
-int yyerror(struct Card *_error_card, char *msg) {
-  return fprintf(stderr, "YACC: %s.\n", msg);
+int yyerror(struct Card *card, char *msg)
+{
+  return 1; //fprintf(stderr, "YACC: %s.\n", msg);
 }

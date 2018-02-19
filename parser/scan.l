@@ -1,9 +1,10 @@
 %{
 #include "../src/card.h"
+#include "../src/syntax.h"
 #include "parse.h"
 
 extern char *yytext;
-#define STR(T) yylval.string = yytext; return T
+#define STR(T) push_token(yytext); yylval.string = yytext; return T
 %}
 %%
 
@@ -26,8 +27,8 @@ land { STR(OBJECTIVE); }
 enchantment { STR(OBJECTIVE); }
 creature { STR(OBJECTIVE); }
 
-[ \t] { }
-\n { return NEWLINE; }
-. { return yytext[0]; }
+[ \t] { push_token(yytext); }
+\n { push_newline(); return NEWLINE; }
+. { push_token(yytext); return yytext[0]; }
 
 %%

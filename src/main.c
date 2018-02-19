@@ -3,6 +3,7 @@
 #include "common.h"
 #include "rules.h"
 #include "card.h"
+#include "syntax.h"
 
   extern int
 yyparse(struct Card *current_card);
@@ -11,14 +12,23 @@ yyparse(struct Card *current_card);
 main(void)
 {
   struct Card *card = card_init();
+  int parse_result;
 
-  if (yyparse(card) == 0)
+  init_syntax_checks();
+
+  parse_result = yyparse(card);
+
+  if (parse_result == 0)
   {
     card_debug(card);
     printf("\n");
   }
+  else
+    debug_syntax_error();
+
+  free_syntax_checks();
 
   card_free(card);
 
-  return 0;
+  return parse_result == 0 ? 0 : 1;
 }

@@ -3,16 +3,21 @@
 e() {
   COLOR=$1
   shift
-  echo -en "\e[0;${COLOR}m$@\e[0;0m"
+  echo -en "\e[1;${COLOR}m$@\e[0;0m"
 }
 
 test-card() {
   echo ""
-  echo -e " $(e 2 "Card Text"): $(e 1 $1)"
 
-  echo " Parsing result:"
-  echo -e "$1" | ./magic-parser
-  echo
+  RESULT=$(echo -e "$1" | ./magic-parser 2>&1)
+
+  if [ $? == 0 ]; then
+    echo -e "$(e 32 "*") $(e 1 $1)"
+    echo " -> $(e 34 "${RESULT}")"
+  else
+    echo -e "$(e 31 "*") $(e 1 $1)"
+    echo " $(e 35 "${RESULT}")"
+  fi
 }
 
 # Some easy examples

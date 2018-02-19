@@ -19,20 +19,29 @@ let me know if you can help me make the code better.
 
 Or use the script to automate it:
 
-    $ scripts/test.sh
-    $ make clean && make && scripts/test.sh
+    $ make && scripts/test.sh
 
-      -> Destroy target creature.
-    Card(Rule(Ability(Effect(destroy/Objective(ability/card)->Objective(target/creature)))))
+    # ...
 
-      -> Destroy target artifact.
-    Card(Rule(Ability(Effect(destroy/Objective(ability/card)->Objective(target/artifact)))))
+    * Destroy target creature.
+    -> Card(Rule(Ability(Effect(destroy:Objective(target:creature)))))
 
-      -> Destroy target creature; Destroy target artifact.
-    Card(Rule(Ability(Effect(destroy/Objective(ability/card)->Objective(target/creature))),Ability(Effect(destroy/Objective(ability/card)->Objective(target/artifact)))))
+    * Destroy target artifact.
+    -> Card(Rule(Ability(Effect(destroy:Objective(target:artifact)))))
 
-      -> Destroy target creature.\nDestroy target artifact.
-    YACC: syntax error
+    * Reach
+    -> Card(Rule(Ability(Reach)))
+
+    * Flying, haste
+    -> Card(Rule(Ability(Flying),Ability(haste)))
+
+    * Reach (This creature can block creatures with flying.)
+    Syntax error:
+    1:Reach (
+
+    * Destroy target creature with flying.
+    Syntax error:
+    1:Destroy target creature w
 
 ## TODO
 
