@@ -15,16 +15,16 @@ enum EffectType
 
 struct Effect
 {
-  struct Objective *objective;
+  struct Recipient *recipient;
 
   enum EffectType type;
 };
 
   struct Effect *
-effect_create_destroy(struct Objective *objective);
+effect_create_destroy(struct Recipient *recipient);
 
   struct Effect *
-effect_create_sacrifice(struct Objective *objective);
+effect_create_sacrifice(struct Recipient *recipient);
 
   void
 effect_debug(struct Effect *effect);

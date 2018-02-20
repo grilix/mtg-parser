@@ -3,6 +3,7 @@
 
 #include "effect.h"
 #include "cost.h"
+#include "reminder_text.h"
 
 enum AbilityType
 {
@@ -17,8 +18,10 @@ struct Ability
 {
   enum AbilityType type;
   struct Cost *cost;
-  struct Effect *effect;
   char *keyword;
+  struct Effect *effect;
+  struct ReminderText *reminder_text;
+  struct Recipient *can_block_recipient;
 
   struct Ability *prev;
   struct Ability *next;
@@ -34,8 +37,14 @@ ability_create_keyword(char *keyword);
 ability_create_static(struct Effect *effect);
 
   struct Ability *
+ability_create_static_can_block(struct Recipient *recipient);
+
+  struct Ability *
 ability_create_activated(struct Cost *cost, struct Effect *effect);
 
+  void
+ability_add_reminder_text(struct Ability *ability,
+                          struct ReminderText *reminder_text);
   //struct Ability *
 //ability_create_triggered(struct Trigger *trigger, struct Effect *effect);
 

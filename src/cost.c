@@ -3,14 +3,14 @@
 
 #include "common.h"
 #include "cost.h"
-#include "objective.h"
+#include "recipient.h"
 
   struct Cost *
-cost_create_sacrifice(struct Objective *objective)
+cost_create_sacrifice(struct Recipient *recipient)
 {
   INIT_PTR(struct Cost, cost);
 
-  cost->objective = objective;
+  cost->recipient = recipient;
   cost->type = COST_SACRIFICE;
 
   return cost;
@@ -34,8 +34,20 @@ cost_debug(struct Cost *cost)
 
   _debug_type(cost->type);
 
-  if (cost->objective != NULL)
-    objective_debug(cost->objective);
+  if (cost->recipient != NULL)
+    recipient_debug(cost->recipient);
 
   printf(")");
+}
+
+  void
+cost_free(struct Cost *cost)
+{
+  switch (cost->type)
+  {
+    case COST_SACRIFICE:
+      if (cost->recipient != NULL)
+        recipient_free(cost->recipient);
+      break;
+  }
 }

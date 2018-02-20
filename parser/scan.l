@@ -21,11 +21,16 @@ Destroy { STR(DESTROY); }
 Sacrifice { STR(SACRIFICE); }
 
 target { STR(TARGET); }
+This { STR(THIS); }
 
-artifact { STR(OBJECTIVE); }
-land { STR(OBJECTIVE); }
-enchantment { STR(OBJECTIVE); }
-creature { STR(OBJECTIVE); }
+artifact { STR(RECIPIENT); }
+land { STR(RECIPIENT); }
+enchantment { STR(RECIPIENT); }
+creatures? { STR(RECIPIENT); }
+
+can { STR(T_CAN); }
+block { STR(T_BLOCK); }
+with { STR(T_WITH); }
 
 [ \t] { push_token(yytext); }
 \n { push_newline(); return NEWLINE; }

@@ -2,25 +2,25 @@
 
 #include "common.h"
 #include "effect.h"
-#include "objective.h"
+#include "recipient.h"
 
   struct Effect *
-effect_create_destroy(struct Objective *objective)
+effect_create_destroy(struct Recipient *recipient)
 {
   INIT_PTR(struct Effect, effect);
 
-  effect->objective = objective;
+  effect->recipient = recipient;
   effect->type = EFFECT_DESTROY;
 
   return effect;
 }
 
   struct Effect *
-effect_create_sacrifice(struct Objective *objective)
+effect_create_sacrifice(struct Recipient *recipient)
 {
   INIT_PTR(struct Effect, effect);
 
-  effect->objective = objective;
+  effect->recipient = recipient;
   effect->type = EFFECT_SACRIFICE;
 
   return effect;
@@ -43,10 +43,10 @@ effect_debug(struct Effect *effect)
 
   _debug_effect_type(effect->type);
 
-  if (effect->objective == NULL)
-    printf("<no objective>");
+  if (effect->recipient == NULL)
+    printf("<no recipient>");
   else
-    objective_debug(effect->objective);
+    recipient_debug(effect->recipient);
 
   printf(")");
 }
@@ -54,8 +54,8 @@ effect_debug(struct Effect *effect)
   void
 effect_free(struct Effect *effect)
 {
-  if (effect->objective != NULL)
-    objective_free(effect->objective);
+  if (effect->recipient != NULL)
+    recipient_free(effect->recipient);
 
   free(effect);
 }

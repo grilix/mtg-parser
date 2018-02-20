@@ -24,10 +24,10 @@ Or use the script to automate it:
     # ...
 
     * Destroy target creature.
-    -> Card(Rule(Ability(Effect(destroy:Objective(target:creature)))))
+    -> Card(Rule(Ability(Effect(destroy:recipient(target:creature)))))
 
     * Destroy target artifact.
-    -> Card(Rule(Ability(Effect(destroy:Objective(target:artifact)))))
+    -> Card(Rule(Ability(Effect(destroy:recipient(target:artifact)))))
 
     * Reach
     -> Card(Rule(Ability(Reach)))
@@ -36,12 +36,11 @@ Or use the script to automate it:
     -> Card(Rule(Ability(Flying),Ability(haste)))
 
     * Reach (This creature can block creatures with flying.)
-    Syntax error:
-    1:Reach (
+    -> Card(Rule(Ability(Reach)))
 
     * Destroy target creature with flying.
-    Syntax error:
-    1:Destroy target creature w
+    -> Card(Rule(Ability(Effect(destroy:recipient(target:creature)))))
+
 
 ## TODO
 

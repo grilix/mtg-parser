@@ -3,10 +3,11 @@
 
 #include "../src/card.h"
 #include "../src/rules.h"
-#include "../src/objective.h"
+#include "../src/recipient.h"
 #include "../src/effect.h"
 #include "../src/ability.h"
 #include "../src/cost.h"
+#include "../src/reminder_text.h"
 #include "../src/syntax.h"
 
 extern int yylex(void);
@@ -16,23 +17,26 @@ int yyerror(struct Card * card, char *s);
 
 %parse-param {struct Card * card}
 
-%token <string> NEWLINE SEMICOLON COLON DOT COMMA DESTROY OBJECTIVE TARGET SACRIFICE
+%token <string> NEWLINE SEMICOLON COLON DOT COMMA DESTROY RECIPIENT TARGET SACRIFICE THIS
+%token <string> T_CAN T_BLOCK T_WITH
 %token <string> A_STATIC
 
 %union {
   struct Rule *r_rule;
-  struct Objective *r_objective;
+  struct Recipient *r_recipient;
   struct Effect *r_effect;
   struct Ability *r_ability;
   struct Cost *r_cost;
+  struct ReminderText *r_reminder;
   char *string;
 }
 
 %type <r_rule> rule rules
-%type <r_objective> objective
+%type <r_recipient> recipient
 %type <r_effect> effect
 %type <r_cost> cost_list cost sacrifice
-%type <r_ability> abilities_list ability static_ability
+%type <r_ability> abilities_list ability keyword_ability static_ability
+%type <r_reminder> reminder_text
 %type <string> error
 
 %%
@@ -47,28 +51,32 @@ rule: abilities_list
     }
     ;
 
-abilities_list: abilities_list SEMICOLON ability
+abilities_list: abilities_list SEMICOLON ability NEWLINE
               {
                 //TODO: ?
                 $1->next = $3;
                 $3->prev = $1;
                 $$ = $3;
               }
-              | ability
+              | ability NEWLINE
               {
                 $$ = $1;
               }
               ;
 
-ability: effect DOT NEWLINE
+ability: effect DOT
        {
          /* spell ability */
          $$ = ability_create_spell($1);
        }
-       | static_ability NEWLINE
+       | keyword_ability
+       {
+        $$ = $1;
+       }
+       | static_ability
        {
          /* static ability */
-         $$ = $1; //ability_create_static($1);
+         $$ = $1;
        }
        | cost_list COLON effect DOT
        {
@@ -83,17 +91,40 @@ ability: effect DOT NEWLINE
        */
        ;
 
-static_ability: A_STATIC
-           {
-             $$ = ability_create_keyword($1);
-           }
-           | static_ability COMMA static_ability
-           {
-                $1->next = $3;
-                $3->prev = $1;
-                $$ = $3;
-           }
-           ;
+keyword_ability: A_STATIC
+               {
+                 $$ = ability_create_keyword($1);
+               }
+               | keyword_ability '(' reminder_text DOT ')'
+               {
+                 ability_add_reminder_text($$, $3);
+               }
+               | keyword_ability COMMA keyword_ability
+               {
+                 $1->next = $3;
+                 $3->prev = $1;
+                 $$ = $3;
+               }
+               ;
+
+reminder_text: ability
+             {
+               $$ = reminder_text_create_ability($1);
+             }
+             ;
+
+static_ability: recipient T_CAN T_BLOCK recipient
+              {
+                $$ = ability_create_static_can_block($4);
+              }
+              | static_ability COMMA static_ability
+              {
+                    $1->next = $3;
+                    $3->prev = $1;
+                    $$ = $3;
+              }
+              ;
+
 cost_list: cost
          /*{*/
            /*//$$ = cost_create($1);*/
@@ -107,25 +138,34 @@ cost: sacrifice
     /*}*/
     ;
 
-sacrifice: SACRIFICE 'a' objective
+sacrifice: SACRIFICE 'a' recipient
          {
           $$ = cost_create_sacrifice($3);
          }
          ;
 
-effect: DESTROY objective
+effect: DESTROY recipient
       {
         $$ = effect_create_destroy($2);
       }
       ;
 
-objective: TARGET OBJECTIVE
+recipient: TARGET RECIPIENT
          {
-           $$ = objective_create(OBJECTIVE_TARGET, $2);
+           $$ = recipient_create(RECIPIENT_TARGET, $2);
          }
-         | OBJECTIVE
+         | RECIPIENT
          {
-           $$ = objective_create(OBJECTIVE_SIMPLE, $1);
+           $$ = recipient_create(RECIPIENT_SIMPLE, $1);
+         }
+         | THIS RECIPIENT
+         {
+           $$ = recipient_create(RECIPIENT_SELF, $2);
+         }
+         | recipient T_WITH keyword_ability
+         {
+           recipient_add_ability($1, $3);
+           $$ = $1;
          }
          ;
 
