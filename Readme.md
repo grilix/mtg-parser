@@ -39,7 +39,7 @@ Or use the script to automate it:
     -> Card(Rule(Ability(Reach)))
 
     * Destroy target creature with flying.
-    -> Card(Rule(Ability(Effect(destroy:Recipient(target:creature)))))
+    -> Card(Rule(Ability(Effect(destroy:Recipient(target:creature(Ability(flying)))))))
 
     * Cycling {R} ({R}, Discard this card: Draw a card.)
     -> Card(Rule(Ability(Cost(R),Cycling)))

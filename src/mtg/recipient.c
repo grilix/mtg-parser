@@ -31,17 +31,6 @@ recipient_add_ability(struct Recipient *recipient, struct Ability *ability)
   APPEND(recipient->with_ability, ability);
 }
 
-  /*struct Recipient **/
-/*recipient_create_with_ability(enum RecipientType flags, struct Ability *ability)*/
-/*{*/
-  /*INIT_PTR(struct Recipient, recipient);*/
-
-  /*recipient->with_ability = ability;*/
-  /*recipient->type = flags;*/
-
-  /*return recipient;*/
-/*}*/
-
   static char *
 _debug_recipient_flag(enum RecipientFlag flag)
 {
@@ -62,6 +51,12 @@ recipient_debug(struct Recipient *recipient)
   if (recipient->text != NULL)
     printf("%s", recipient->text);
 
+  if (recipient->with_ability != NULL)
+  {
+    printf("(");
+    ability_debug(recipient->with_ability);
+    printf(")");
+  }
   printf(")");
 }
 
