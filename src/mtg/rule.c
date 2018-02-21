@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "common.h"
-#include "rules.h"
+#include "../common.h"
+#include "rule.h"
 
   struct Rule *
 rule_init(void)
@@ -12,7 +12,6 @@ rule_init(void)
   rule->last_ability = NULL;
   rule->next = NULL;
   rule->prev = NULL;
-  rule->text = NULL;
 
   return rule;
 }
@@ -49,9 +48,6 @@ rule_free(struct Rule *last_rule)
 
   if (last_rule->last_ability != NULL)
     ability_free(last_rule->last_ability);
-
-  if (last_rule->text != NULL)
-    free(last_rule->text);
 
   free(last_rule);
 }

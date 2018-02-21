@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "common.h"
+#include "../common.h"
 #include "cost.h"
 #include "recipient.h"
 

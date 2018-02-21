@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "common.h"
+#include "../common.h"
 #include "effect.h"
 #include "ability.h"
 #include "cost.h"

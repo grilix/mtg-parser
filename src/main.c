@@ -1,8 +1,8 @@
 #include <stdio.h>
 
 #include "common.h"
-#include "rules.h"
-#include "card.h"
+#include "mtg/rule.h"
+#include "mtg/card.h"
 #include "syntax.h"
 
   extern int

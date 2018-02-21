@@ -5,10 +5,10 @@
 
 struct Rule
 {
-  char *text;
   struct Ability *last_ability;
-  struct Rule *next;
+
   struct Rule *prev;
+  struct Rule *next;
 };
 
   struct Rule *

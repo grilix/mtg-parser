@@ -1,13 +1,13 @@
 %{
 #include <stdio.h>
 
-#include "../src/card.h"
-#include "../src/rules.h"
-#include "../src/recipient.h"
-#include "../src/effect.h"
-#include "../src/ability.h"
-#include "../src/cost.h"
-#include "../src/reminder_text.h"
+#include "../src/mtg/card.h"
+#include "../src/mtg/rule.h"
+#include "../src/mtg/recipient.h"
+#include "../src/mtg/effect.h"
+#include "../src/mtg/ability.h"
+#include "../src/mtg/cost.h"
+#include "../src/mtg/reminder_text.h"
 #include "../src/syntax.h"
 
 extern int yylex(void);

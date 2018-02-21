@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "common.h"
+#include "../common.h"
 #include "card.h"
-#include "rules.h"
+#include "rule.h"
 
   struct Card *
 card_init(void)

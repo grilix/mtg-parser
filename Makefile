@@ -1,16 +1,17 @@
 YFLAGS  = -d
 
 # TODO: remove parser/parse.h somehow?
-parser_objs = parser/parse.o parser/parse.h parser/scan.o
-objects = $(parser_objs) \
-		src/card.o src/rules.o src/recipient.o src/effect.o \
-		src/ability.o src/cost.o src/reminder_text.o \
-		src/syntax.o \
-		src/main.o
+parser_obj = parser/parse.o parser/parse.h parser/scan.o
+mtg_src = $(wildcard src/mtg/*.c)
+mtg_obj = $(mtg_src:%.c=%.o)
+
+app_obj = src/main.o src/syntax.o
 
 name = magic-parser
 
-$(name): $(objects)
+objects = $(parser_obj) $(app_obj) $(mtg_obj)
+
+$(name): $(parser_obj) $(app_obj) $(mtg_obj)
 	cc -o $(name) $(objects) -lfl -L/usr/lib
 
 # TODO: Improve this step?

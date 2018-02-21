@@ -1,5 +1,5 @@
 %{
-#include "../src/card.h"
+#include "../src/mtg/card.h"
 #include "../src/syntax.h"
 #include "parse.h"
 

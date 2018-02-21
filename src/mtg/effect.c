@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "common.h"
+#include "../common.h"
 #include "effect.h"
 #include "recipient.h"
 

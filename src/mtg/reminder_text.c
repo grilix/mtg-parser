@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "common.h"
+#include "../common.h"
 #include "reminder_text.h"
 
   struct ReminderText *
