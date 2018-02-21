@@ -17,9 +17,11 @@ int yyerror(struct Card * card, char *s);
 
 %parse-param {struct Card * card}
 
-%token <string> NEWLINE SEMICOLON COLON DOT COMMA DESTROY RECIPIENT TARGET SACRIFICE THIS
+%token <string> NEWLINE SEMICOLON COLON DOT COMMA RECIPIENT TARGET THIS
+%token <string> DESTROY SACRIFICE DISCARD DRAW
+%token <r_char> MANA_COLOR
 %token <string> T_CAN T_BLOCK T_WITH
-%token <string> A_STATIC
+%token <string> A_KEYWORD
 
 %union {
   struct Rule *r_rule;
@@ -28,13 +30,14 @@ int yyerror(struct Card * card, char *s);
   struct Ability *r_ability;
   struct Cost *r_cost;
   struct ReminderText *r_reminder;
+  char r_char;
   char *string;
 }
 
 %type <r_rule> rule rules
 %type <r_recipient> recipient
 %type <r_effect> effect
-%type <r_cost> cost_list cost sacrifice
+%type <r_cost> cost_list cost sacrifice discard mana
 %type <r_ability> abilities_list ability keyword_ability static_ability
 %type <r_reminder> reminder_text
 %type <string> error
@@ -91,11 +94,17 @@ ability: effect DOT
        */
        ;
 
-keyword_ability: A_STATIC
+keyword_ability: A_KEYWORD
                {
                  $$ = ability_create_keyword($1);
                }
+               | keyword_ability mana
+               {
+                 ability_add_cost($1, $2);
+                 $$ = $1;
+               }
                | keyword_ability '(' reminder_text DOT ')'
+               | keyword_ability '(' reminder_text ')'
                {
                  ability_add_reminder_text($$, $3);
                }
@@ -126,27 +135,55 @@ static_ability: recipient T_CAN T_BLOCK recipient
               ;
 
 cost_list: cost
-         /*{*/
-           /*//$$ = cost_create($1);*/
-           /*$$ = $1;*/
-         /*}*/
+         {
+           $$ = $1;
+         }
+         | cost_list COMMA cost
+         {
+           $1->next = $3;
+           $3->prev = $1;
+           $$ = $1;
+         }
          ;
 
 cost: sacrifice
-    /*{*/
-      /*$$ = $1;*/
-    /*}*/
+    | discard
+    {
+      // TODO
+      $$ = $1;
+    }
+    | mana
+    {
+      $$ = $1;
+    }
     ;
 
-sacrifice: SACRIFICE 'a' recipient
+sacrifice: SACRIFICE recipient
          {
-          $$ = cost_create_sacrifice($3);
+          $$ = cost_create_sacrifice($2);
          }
          ;
+
+discard: DISCARD recipient
+       {
+         $$ = cost_create_discard($2);
+       }
+       ;
+
+mana: MANA_COLOR
+    {
+      $$ = cost_create_mana($1);
+    }
+    ;
+
 
 effect: DESTROY recipient
       {
         $$ = effect_create_destroy($2);
+      }
+      | DRAW 'a' RECIPIENT /* TODO: "a card" */
+      {
+        $$ = effect_create_draw(1);
       }
       ;
 
@@ -161,6 +198,10 @@ recipient: TARGET RECIPIENT
          | THIS RECIPIENT
          {
            $$ = recipient_create(RECIPIENT_SELF, $2);
+         }
+         | 'a' RECIPIENT
+         {
+           $$ = recipient_create(RECIPIENT_SIMPLE, $2);
          }
          | recipient T_WITH keyword_ability
          {

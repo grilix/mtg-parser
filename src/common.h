@@ -21,8 +21,8 @@
 
 // COPY_STR(source, destination);
 #define COPY_STR(S,D) \
-  D = malloc(sizeof(char) * strlen(S)); \
-  strcpy(D, S);
+  D = malloc(strlen(S) + 1); \
+  strcpy(D, S); D[strlen(S)] = '\0'
 
 // APPEND(last_item, item);
 #define APPEND(L,I) \

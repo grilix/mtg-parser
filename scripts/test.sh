@@ -40,6 +40,10 @@ test-card "Reach (This creature can block creatures with flying.)"
 #test-card "Destroy target attacking or blocking creature."
 # Wing Snare
 test-card "Destroy target creature with flying."
+# Desert Cerodon
+test-card "Cycling {R} ({R}, Discard this card: Draw a card.)"
+# Gravedigger
+test-card "When Gravedigger enters the battlefield, you may return target creature card from your graveyard to your hand."
 # Rabid Bite
 #test-card "Target creature you control deals damage equal to its power to target creature you don't control."
 # Stalking Tiger

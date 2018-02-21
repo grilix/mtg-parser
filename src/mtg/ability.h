@@ -45,8 +45,10 @@ ability_create_activated(struct Cost *cost, struct Effect *effect);
   void
 ability_add_reminder_text(struct Ability *ability,
                           struct ReminderText *reminder_text);
-  //struct Ability *
-//ability_create_triggered(struct Trigger *trigger, struct Effect *effect);
+
+  void
+ability_add_cost(struct Ability *ability,
+                 struct Cost *cost);
 
   void
 ability_debug(struct Ability *last_ability);

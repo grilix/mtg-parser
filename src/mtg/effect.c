@@ -5,9 +5,19 @@
 #include "recipient.h"
 
   struct Effect *
-effect_create_destroy(struct Recipient *recipient)
+init_effect()
 {
   INIT_PTR(struct Effect, effect);
+
+  effect->recipient = NULL;
+
+  return effect;
+}
+
+  struct Effect *
+effect_create_destroy(struct Recipient *recipient)
+{
+  struct Effect *effect = init_effect();
 
   effect->recipient = recipient;
   effect->type = EFFECT_DESTROY;
@@ -16,9 +26,20 @@ effect_create_destroy(struct Recipient *recipient)
 }
 
   struct Effect *
+effect_create_draw(int count)
+{
+  struct Effect *effect = init_effect();
+
+  effect->type = EFFECT_DRAW;
+  effect->count = count;
+
+  return effect;
+}
+
+  struct Effect *
 effect_create_sacrifice(struct Recipient *recipient)
 {
-  INIT_PTR(struct Effect, effect);
+  struct Effect *effect = init_effect();
 
   effect->recipient = recipient;
   effect->type = EFFECT_SACRIFICE;

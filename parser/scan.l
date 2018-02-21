@@ -5,6 +5,7 @@
 
 extern char *yytext;
 #define STR(T) push_token(yytext); yylval.string = yytext; return T
+#define STR_V(T, V) push_token(yytext); yylval.string = V; return T
 %}
 %%
 
@@ -12,21 +13,26 @@ extern char *yytext;
 ";" { STR(SEMICOLON); }
 "," { STR(COMMA); }
 \. { STR(DOT); }
+\{[RWBUG]\} { STR_V(MANA_COLOR, yytext[1]); }
 
-[Rr]each { STR(A_STATIC); }
-[Ff]lying { STR(A_STATIC); }
-[Hh]aste { STR(A_STATIC); }
+[Rr]each { STR(A_KEYWORD); }
+[Ff]lying { STR(A_KEYWORD); }
+[Hh]aste { STR(A_KEYWORD); }
+[Cc]ycling { STR(A_KEYWORD); }
 
 Destroy { STR(DESTROY); }
 Sacrifice { STR(SACRIFICE); }
+Discard { STR(DISCARD); }
+Draw { STR(DRAW); }
 
 target { STR(TARGET); }
-This { STR(THIS); }
+[Tt]his { STR(THIS); }
 
 artifact { STR(RECIPIENT); }
 land { STR(RECIPIENT); }
 enchantment { STR(RECIPIENT); }
 creatures? { STR(RECIPIENT); }
+card { STR(RECIPIENT); }
 
 can { STR(T_CAN); }
 block { STR(T_BLOCK); }

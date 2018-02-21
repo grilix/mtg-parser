@@ -88,6 +88,13 @@ ability_add_reminder_text(struct Ability *ability,
 }
 
   void
+ability_add_cost(struct Ability *ability,
+                 struct Cost *cost)
+{
+  APPEND(ability->cost, cost);
+}
+
+  void
 ability_debug(struct Ability *last_ability)
 {
   if (last_ability->prev != NULL) {
@@ -97,14 +104,17 @@ ability_debug(struct Ability *last_ability)
 
   printf("Ability(");
 
-  if (last_ability->type == ABILITY_ACTIVATED)
   {
     if (last_ability->cost == NULL)
-      printf("<no cost>");
+    {
+      if (last_ability->type == ABILITY_ACTIVATED)
+        printf("<no cost>,");
+    }
     else
+    {
       cost_debug(last_ability->cost);
-
-    printf(",");
+      printf(",");
+    }
   }
 
   if (last_ability->type == ABILITY_KEYWORD)
