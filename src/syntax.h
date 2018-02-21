@@ -17,25 +17,25 @@ struct ParseLine
   struct ParseLineToken *last_token;
 };
 
-  void
+  extern void
 push_token(char *text);
 
-  void
+  extern void
 push_newline(void);
 
-  void
+  extern void
 init_syntax_checks(void);
 
-  void
+  extern void
 free_syntax_checks(void);
 
-  void
+  extern void
 debug_syntax_error(void);
 
-  void
+  extern void
 syntax_error(char *text);
 
-  void
+  extern void
 syntax_checkpoint(void);
 
 #endif

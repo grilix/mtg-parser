@@ -3,24 +3,24 @@
 
 #include "ability.h"
 
-struct Rule
+struct MtgRule
 {
-  struct Ability *last_ability;
+  struct MtgAbility *last_ability;
 
-  struct Rule *prev;
-  struct Rule *next;
+  struct MtgRule *prev;
+  struct MtgRule *next;
 };
 
-  struct Rule *
-rule_init(void);
+  extern struct MtgRule *
+mtg_rule_init(void);
 
-  void
-add_rule_ability(struct Rule *rule, struct Ability *last_ability);
+  extern void
+mtg_add_rule_ability(struct MtgRule *rule, struct MtgAbility *last_ability);
 
-  void
-rule_debug(struct Rule *last_rule);
+  extern void
+mtg_rule_debug(struct MtgRule *last_rule);
 
-  void
-rule_free(struct Rule *last_rule);
+  extern void
+mtg_rule_free(struct MtgRule *last_rule);
 
 #endif

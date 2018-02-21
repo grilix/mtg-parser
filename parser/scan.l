@@ -5,7 +5,7 @@
 
 extern char *yytext;
 #define STR(T) push_token(yytext); yylval.string = yytext; return T
-#define STR_V(T, V) push_token(yytext); yylval.string = V; return T
+#define INT(T, V) push_token(yytext); yylval.integer = V; return T
 %}
 %%
 
@@ -13,7 +13,7 @@ extern char *yytext;
 ";" { STR(SEMICOLON); }
 "," { STR(COMMA); }
 \. { STR(DOT); }
-\{[RWBUG]\} { STR_V(MANA_COLOR, yytext[1]); }
+\{[RWBUG]\} { INT(MANA_COLOR, yytext[1]); }
 
 [Rr]each { STR(A_KEYWORD); }
 [Ff]lying { STR(A_KEYWORD); }

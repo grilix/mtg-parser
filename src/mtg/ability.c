@@ -7,10 +7,10 @@
 #include "cost.h"
 #include "recipient.h"
 
-  static struct Ability *
+  static struct MtgAbility *
 init_ability(void)
 {
-  INIT_PTR(struct Ability, ability);
+  INIT_PTR(struct MtgAbility, ability);
 
   ability->cost = NULL;
   ability->keyword = NULL;
@@ -23,10 +23,10 @@ init_ability(void)
   return ability;
 }
 
-  struct Ability *
-ability_create_static(struct Effect *effect)
+  extern struct MtgAbility *
+mtg_ability_create_static(struct MtgEffect *effect)
 {
-  struct Ability *ability = init_ability();
+  struct MtgAbility *ability = init_ability();
 
   ability->type = ABILITY_STATIC;
   ability->effect = effect;
@@ -34,10 +34,10 @@ ability_create_static(struct Effect *effect)
   return ability;
 }
 
-  struct Ability *
-ability_create_static_can_block(struct Recipient *recipient)
+  extern struct MtgAbility *
+mtg_ability_create_static_can_block(struct MtgRecipient *recipient)
 {
-  struct Ability *ability = init_ability();
+  struct MtgAbility *ability = init_ability();
 
   ability->type = ABILITY_STATIC;
   ability->can_block_recipient = recipient;
@@ -45,10 +45,10 @@ ability_create_static_can_block(struct Recipient *recipient)
   return ability;
 }
 
-  struct Ability *
-ability_create_spell(struct Effect *effect)
+  extern struct MtgAbility *
+mtg_ability_create_spell(struct MtgEffect *effect)
 {
-  struct Ability *ability = init_ability();
+  struct MtgAbility *ability = init_ability();
 
   ability->type = ABILITY_SPELL;
   ability->effect = effect;
@@ -56,10 +56,10 @@ ability_create_spell(struct Effect *effect)
   return ability;
 }
 
-  struct Ability *
-ability_create_activated(struct Cost *cost, struct Effect *effect)
+  extern struct MtgAbility *
+mtg_ability_create_activated(struct MtgCost *cost, struct MtgEffect *effect)
 {
-  struct Ability *ability = init_ability();
+  struct MtgAbility *ability = init_ability();
 
   ability->type = ABILITY_ACTIVATED;
   ability->cost = cost;
@@ -68,10 +68,10 @@ ability_create_activated(struct Cost *cost, struct Effect *effect)
   return ability;
 }
 
-  struct Ability *
-ability_create_keyword(char *keyword)
+  extern struct MtgAbility *
+mtg_ability_create_keyword(char *keyword)
 {
-  struct Ability *ability = init_ability();
+  struct MtgAbility *ability = init_ability();
 
   ability->type = ABILITY_KEYWORD;
   COPY_STR(keyword, ability->keyword);
@@ -79,26 +79,26 @@ ability_create_keyword(char *keyword)
   return ability;
 }
 
-  void
-ability_add_reminder_text(struct Ability *ability,
-                          struct ReminderText *reminder_text)
+  extern void
+mtg_ability_add_reminder_text(struct MtgAbility *ability,
+                          struct MtgReminderText *reminder_text)
 {
   // TODO: multiple reminder texts?
   ability->reminder_text = reminder_text;
 }
 
-  void
-ability_add_cost(struct Ability *ability,
-                 struct Cost *cost)
+  extern void
+mtg_ability_add_cost(struct MtgAbility *ability,
+                 struct MtgCost *cost)
 {
   APPEND(ability->cost, cost);
 }
 
-  void
-ability_debug(struct Ability *last_ability)
+  extern void
+mtg_ability_debug(struct MtgAbility *last_ability)
 {
   if (last_ability->prev != NULL) {
-    ability_debug(last_ability->prev);
+    mtg_ability_debug(last_ability->prev);
     printf(",");
   }
 
@@ -112,7 +112,7 @@ ability_debug(struct Ability *last_ability)
     }
     else
     {
-      cost_debug(last_ability->cost);
+      mtg_cost_debug(last_ability->cost);
       printf(",");
     }
   }
@@ -124,32 +124,32 @@ ability_debug(struct Ability *last_ability)
     if (last_ability->effect == NULL)
       printf("<no effect>");
     else
-      effect_debug(last_ability->effect);
+      mtg_effect_debug(last_ability->effect);
   }
 
   printf(")");
 }
 
-  void
-ability_free(struct Ability *last_ability)
+  extern void
+mtg_ability_free(struct MtgAbility *last_ability)
 {
   if (last_ability->prev != NULL)
-    ability_free(last_ability->prev);
+    mtg_ability_free(last_ability->prev);
 
   if (last_ability->cost != NULL)
-    cost_free(last_ability->cost);
+    mtg_cost_free(last_ability->cost);
 
   if (last_ability->keyword != NULL)
     free(last_ability->keyword);
 
   if (last_ability->effect != NULL)
-    effect_free(last_ability->effect);
+    mtg_effect_free(last_ability->effect);
 
   if (last_ability->reminder_text != NULL)
-    reminder_text_free(last_ability->reminder_text);
+    mtg_reminder_text_free(last_ability->reminder_text);
 
   if (last_ability->can_block_recipient != NULL)
-    recipient_free(last_ability->can_block_recipient);
+    mtg_recipient_free(last_ability->can_block_recipient);
 
   free(last_ability);
 }

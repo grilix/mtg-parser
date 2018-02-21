@@ -5,10 +5,10 @@
 #include "cost.h"
 #include "recipient.h"
 
-  static struct Cost *
+  static struct MtgCost *
 init_cost()
 {
-  INIT_PTR(struct Cost, cost);
+  INIT_PTR(struct MtgCost, cost);
 
   cost->recipient = NULL;
   cost->prev = NULL;
@@ -17,10 +17,10 @@ init_cost()
   return cost;
 }
 
-  struct Cost *
-cost_create_sacrifice(struct Recipient *recipient)
+  extern struct MtgCost *
+mtg_cost_create_sacrifice(struct MtgRecipient *recipient)
 {
-  struct Cost *cost = init_cost();
+  struct MtgCost *cost = init_cost();
 
   cost->recipient = recipient;
   cost->type = COST_SACRIFICE;
@@ -28,10 +28,10 @@ cost_create_sacrifice(struct Recipient *recipient)
   return cost;
 }
 
-  struct Cost *
-cost_create_discard(struct Recipient *recipient)
+  extern struct MtgCost *
+mtg_cost_create_discard(struct MtgRecipient *recipient)
 {
-  struct Cost *cost = init_cost();
+  struct MtgCost *cost = init_cost();
 
   cost->recipient = recipient;
   cost->type = COST_DISCARD;
@@ -39,17 +39,17 @@ cost_create_discard(struct Recipient *recipient)
   return cost;
 }
 
-  struct Cost *
-cost_create_mana(char color)
+  extern struct MtgCost *
+mtg_cost_create_mana(enum MtgColor color)
 {
-  struct Cost *cost = init_cost();
+  struct MtgCost *cost = init_cost();
   cost->type = COST_MANA;
   cost->color = color;
   return cost;
 }
 
   static void
-_debug_type(struct Cost *cost)
+_debug_type(struct MtgCost *cost)
 {
   switch (cost->type)
   {
@@ -61,12 +61,12 @@ _debug_type(struct Cost *cost)
   }
 }
 
-  void
-cost_debug(struct Cost *cost)
+  extern void
+mtg_cost_debug(struct MtgCost *cost)
 {
   if (cost->prev != NULL)
   {
-    cost_debug(cost->prev);
+    mtg_cost_debug(cost->prev);
     printf(",");
   }
 
@@ -75,22 +75,22 @@ cost_debug(struct Cost *cost)
   _debug_type(cost);
 
   if (cost->recipient != NULL)
-    recipient_debug(cost->recipient);
+    mtg_recipient_debug(cost->recipient);
 
   printf(")");
 }
 
-  void
-cost_free(struct Cost *cost)
+  extern void
+mtg_cost_free(struct MtgCost *cost)
 {
   if (cost->prev != NULL)
-    cost_free(cost->prev);
+    mtg_cost_free(cost->prev);
 
   switch (cost->type)
   {
     case COST_SACRIFICE:
       if (cost->recipient != NULL)
-        recipient_free(cost->recipient);
+        mtg_recipient_free(cost->recipient);
       break;
   }
 }

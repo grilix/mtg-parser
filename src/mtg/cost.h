@@ -1,38 +1,39 @@
 #ifndef COST_H
 #define COST_H
 
+#include "types.h"
 #include "cost.h"
 
-enum CostType
+enum MtgCostType
 {
   COST_SACRIFICE,
   COST_DISCARD,
   COST_MANA
 };
 
-struct Cost
+struct MtgCost
 {
-  enum CostType type;
-  struct Recipient *recipient;
-  char color;
+  enum MtgCostType type;
+  struct MtgRecipient *recipient;
+  enum MtgColor color;
 
-  struct Cost *prev;
-  struct Cost *next;
+  struct MtgCost *prev;
+  struct MtgCost *next;
 };
 
-  struct Cost *
-cost_create_sacrifice(struct Recipient *recipient);
+  extern struct MtgCost *
+mtg_cost_create_sacrifice(struct MtgRecipient *recipient);
 
-  struct Cost *
-cost_create_mana(char color);
+  extern struct MtgCost *
+mtg_cost_create_mana(enum MtgColor color);
 
-  struct Cost *
-cost_create_discard(struct Recipient *recipient);
+  extern struct MtgCost *
+mtg_cost_create_discard(struct MtgRecipient *recipient);
 
-  void
-cost_debug(struct Cost *cost);
+  extern void
+mtg_cost_debug(struct MtgCost *cost);
 
-  void
-cost_free(struct Cost *cost);
+  extern void
+mtg_cost_free(struct MtgCost *cost);
 
 #endif

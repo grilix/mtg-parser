@@ -3,26 +3,26 @@
 
 #include "rule.h"
 
-struct Card
+struct MtgCard
 {
-  struct Rule *last_rule;
+  struct MtgRule *last_rule;
 };
 
-  struct Card *
-card_init(void);
+  extern struct MtgCard *
+mtg_card_init(void);
 
 /* Add a list of abilities as a new rule.
  */
-  void
-card_add_ability_set(struct Card *card, struct Ability *last_ability);
+  extern void
+mtg_card_add_ability_set(struct MtgCard *card, struct MtgAbility *last_ability);
 
-  void
-card_add_rule(struct Card *card, struct Rule *last_rule);
+  extern void
+mtg_card_add_rule(struct MtgCard *card, struct MtgRule *last_rule);
 
-  void
-card_debug(struct Card *card);
+  extern void
+mtg_card_debug(struct MtgCard *card);
 
-  void
-card_free(struct Card *card);
+  extern void
+mtg_card_free(struct MtgCard *card);
 
 #endif

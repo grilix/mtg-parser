@@ -3,18 +3,18 @@
 
 #include "ability.h"
 
-struct ReminderText
+struct MtgReminderText
 {
-  struct Ability *ability;
+  struct MtgAbility *ability;
 };
 
-  struct ReminderText *
-reminder_text_create_ability(struct Ability *ability);
+  extern struct MtgReminderText *
+mtg_reminder_text_create_ability(struct MtgAbility *ability);
 
-  void
-reminder_text_debug(struct ReminderText *reminder_text);
+  extern void
+mtg_reminder_text_debug(struct MtgReminderText *reminder_text);
 
-  void
-reminder_text_free(struct ReminderText *reminder_text);
+  extern void
+mtg_reminder_text_free(struct MtgReminderText *reminder_text);
 
 #endif

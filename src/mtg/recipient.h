@@ -3,27 +3,27 @@
 
 #include "ability.h"
 
-enum RecipientFlag
+enum MtgRecipientFlag
 {
   RECIPIENT_SIMPLE,
   RECIPIENT_TARGET,
   RECIPIENT_SELF
 };
 
-enum RecipientTargetType
+enum MtgRecipientTargetType
 {
   TARGET_TYPE_OBJECT,
   TARGET_TYPE_PLAYER,
   TARGET_TYPE_ZONE
 };
 
-enum RecipientObjectType
+enum MtgRecipientObjectType
 {
   OBJECT_TYPE_PERMANENT,
   OBJECT_TYPE_SPELL
 };
 
-enum PermanentType
+enum MtgPermanentType
 {
   PERMANENT_CREATURE,
   PERMANENT_LAND,
@@ -32,28 +32,28 @@ enum PermanentType
 };
 
 
-struct Recipient
+struct MtgRecipient
 {
-  enum RecipientFlag flag;
-  enum RecipientTargetType target_type;
-  enum RecipientObjectType object_type;
-  enum PermanentType permanent_type;
+  enum MtgRecipientFlag flag;
+  enum MtgRecipientTargetType target_type;
+  enum MtgRecipientObjectType object_type;
+  enum MtgPermanentType permanent_type;
 
-  struct Ability *with_ability;
+  struct MtgAbility *with_ability;
 
   char *text;
 };
 
-  struct Recipient *
-recipient_create(enum RecipientFlag flag, char *text);
+  extern struct MtgRecipient *
+mtg_recipient_create(enum MtgRecipientFlag flag, char *text);
 
-  void
-recipient_add_ability(struct Recipient *recipient, struct Ability *ability);
+  extern void
+mtg_recipient_add_ability(struct MtgRecipient *recipient, struct MtgAbility *ability);
 
-  void
-recipient_debug(struct Recipient *recipient);
+  extern void
+mtg_recipient_debug(struct MtgRecipient *recipient);
 
-  void
-recipient_free(struct Recipient *recipient);
+  extern void
+mtg_recipient_free(struct MtgRecipient *recipient);
 
 #endif

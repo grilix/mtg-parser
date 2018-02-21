@@ -5,7 +5,7 @@
 #include "cost.h"
 #include "reminder_text.h"
 
-enum AbilityType
+enum MtgAbilityType
 {
   ABILITY_KEYWORD,
   ABILITY_STATIC,
@@ -14,46 +14,46 @@ enum AbilityType
   ABILITY_SPELL
 };
 
-struct Ability
+struct MtgAbility
 {
-  enum AbilityType type;
-  struct Cost *cost;
+  enum MtgAbilityType type;
+  struct MtgCost *cost;
   char *keyword;
-  struct Effect *effect;
-  struct ReminderText *reminder_text;
-  struct Recipient *can_block_recipient;
+  struct MtgEffect *effect;
+  struct MtgReminderText *reminder_text;
+  struct MtgRecipient *can_block_recipient;
 
-  struct Ability *prev;
-  struct Ability *next;
+  struct MtgAbility *prev;
+  struct MtgAbility *next;
 };
 
-  struct Ability *
-ability_create_spell(struct Effect *effect);
+  extern struct MtgAbility *
+mtg_ability_create_spell(struct MtgEffect *effect);
 
-  struct Ability *
-ability_create_keyword(char *keyword);
+  extern struct MtgAbility *
+mtg_ability_create_keyword(char *keyword);
 
-  struct Ability *
-ability_create_static(struct Effect *effect);
+  extern struct MtgAbility *
+mtg_ability_create_static(struct MtgEffect *effect);
 
-  struct Ability *
-ability_create_static_can_block(struct Recipient *recipient);
+  extern struct MtgAbility *
+mtg_ability_create_static_can_block(struct MtgRecipient *recipient);
 
-  struct Ability *
-ability_create_activated(struct Cost *cost, struct Effect *effect);
+  extern struct MtgAbility *
+mtg_ability_create_activated(struct MtgCost *cost, struct MtgEffect *effect);
 
-  void
-ability_add_reminder_text(struct Ability *ability,
-                          struct ReminderText *reminder_text);
+  extern void
+mtg_ability_add_reminder_text(struct MtgAbility *ability,
+                          struct MtgReminderText *reminder_text);
 
-  void
-ability_add_cost(struct Ability *ability,
-                 struct Cost *cost);
+  extern void
+mtg_ability_add_cost(struct MtgAbility *ability,
+                 struct MtgCost *cost);
 
-  void
-ability_debug(struct Ability *last_ability);
+  extern void
+mtg_ability_debug(struct MtgAbility *last_ability);
 
-  void
-ability_free(struct Ability *last_ability);
+  extern void
+mtg_ability_free(struct MtgAbility *last_ability);
 
 #endif

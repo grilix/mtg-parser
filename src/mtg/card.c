@@ -5,18 +5,18 @@
 #include "card.h"
 #include "rule.h"
 
-  struct Card *
-card_init(void)
+  extern struct MtgCard *
+mtg_card_init(void)
 {
-  INIT_PTR(struct Card, card);
+  INIT_PTR(struct MtgCard, card);
 
   card->last_rule = 0;
 
   return card;
 }
 
-  void
-card_add_rule(struct Card *card, struct Rule *rule)
+  extern void
+mtg_card_add_rule(struct MtgCard *card, struct MtgRule *rule)
 {
   if (card->last_rule != NULL)
   {
@@ -29,31 +29,31 @@ card_add_rule(struct Card *card, struct Rule *rule)
   card->last_rule = rule;
 }
 
-  void
-card_add_ability_set(struct Card *card, struct Ability *last_ability)
+  extern void
+mtg_card_add_ability_set(struct MtgCard *card, struct MtgAbility *last_ability)
 {
-  card_add_rule(card, rule_init());
+  mtg_card_add_rule(card, mtg_rule_init());
   card->last_rule->last_ability = last_ability;
 }
 
-  void
-card_debug(struct Card *card)
+  extern void
+mtg_card_debug(struct MtgCard *card)
 {
   printf("Card(");
 
   if (card->last_rule == NULL)
     printf("<no rules>");
   else
-    rule_debug(card->last_rule);
+    mtg_rule_debug(card->last_rule);
 
   printf(")");
 }
 
-  void
-card_free(struct Card *card)
+  extern void
+mtg_card_free(struct MtgCard *card)
 {
   if (card->last_rule != NULL)
-    rule_free(card->last_rule);
+    mtg_rule_free(card->last_rule);
 
   free(card);
 }

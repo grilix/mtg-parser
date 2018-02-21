@@ -6,12 +6,12 @@
 #include "syntax.h"
 
   extern int
-yyparse(struct Card *current_card);
+yyparse(struct MtgCard *current_card);
 
   int
 main(void)
 {
-  struct Card *card = card_init();
+  struct MtgCard *card = mtg_card_init();
   int parse_result;
 
   init_syntax_checks();
@@ -20,7 +20,7 @@ main(void)
 
   if (parse_result == 0)
   {
-    card_debug(card);
+    mtg_card_debug(card);
     printf("\n");
   }
   else
@@ -28,7 +28,7 @@ main(void)
 
   free_syntax_checks();
 
-  card_free(card);
+  mtg_card_free(card);
 
   return parse_result == 0 ? 0 : 1;
 }

@@ -6,7 +6,7 @@
 #ifndef EFFECT_H
 #define EFFECT_H
 
-enum EffectType
+enum MtgEffectType
 {
   EFFECT_DESTROY,
   EFFECT_SACRIFICE,
@@ -14,27 +14,27 @@ enum EffectType
   EFFECT_DRAW
 };
 
-struct Effect
+struct MtgEffect
 {
-  struct Recipient *recipient;
+  struct MtgRecipient *recipient;
   int count;
 
-  enum EffectType type;
+  enum MtgEffectType type;
 };
 
-  struct Effect *
-effect_create_destroy(struct Recipient *recipient);
+  extern struct MtgEffect *
+mtg_effect_create_destroy(struct MtgRecipient *recipient);
 
-  struct Effect *
-effect_create_draw(int count);
+  extern struct MtgEffect *
+mtg_effect_create_draw(int count);
 
-  struct Effect *
-effect_create_sacrifice(struct Recipient *recipient);
+  extern struct MtgEffect *
+mtg_effect_create_sacrifice(struct MtgRecipient *recipient);
 
-  void
-effect_debug(struct Effect *effect);
+  extern void
+mtg_effect_debug(struct MtgEffect *effect);
 
-  void
-effect_free(struct Effect *effect);
+  extern void
+mtg_effect_free(struct MtgEffect *effect);
 
 #endif

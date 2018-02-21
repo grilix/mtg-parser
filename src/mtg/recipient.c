@@ -4,20 +4,20 @@
 #include "../common.h"
 #include "recipient.h"
 
-  struct Recipient *
+  static struct MtgRecipient *
 init_recipient(void)
 {
-  INIT_PTR(struct Recipient, recipient);
+  INIT_PTR(struct MtgRecipient, recipient);
 
   recipient->with_ability = NULL;
 
   return recipient;
 }
 
-  struct Recipient *
-recipient_create(enum RecipientFlag flag, char *text)
+  extern struct MtgRecipient *
+mtg_recipient_create(enum MtgRecipientFlag flag, char *text)
 {
-  struct Recipient *recipient = init_recipient();
+  struct MtgRecipient *recipient = init_recipient();
 
   COPY_STR(text, recipient->text);
   recipient->flag = flag;
@@ -25,14 +25,14 @@ recipient_create(enum RecipientFlag flag, char *text)
   return recipient;
 }
 
-  void
-recipient_add_ability(struct Recipient *recipient, struct Ability *ability)
+  extern void
+mtg_recipient_add_ability(struct MtgRecipient *recipient, struct MtgAbility *ability)
 {
   APPEND(recipient->with_ability, ability);
 }
 
   static char *
-_debug_recipient_flag(enum RecipientFlag flag)
+_debug_recipient_flag(enum MtgRecipientFlag flag)
 {
   switch (flag)
   {
@@ -43,8 +43,8 @@ _debug_recipient_flag(enum RecipientFlag flag)
   return "";
 }
 
-  void
-recipient_debug(struct Recipient *recipient)
+  extern void
+mtg_recipient_debug(struct MtgRecipient *recipient)
 {
   printf("Recipient(%s", _debug_recipient_flag(recipient->flag));
 
@@ -54,20 +54,20 @@ recipient_debug(struct Recipient *recipient)
   if (recipient->with_ability != NULL)
   {
     printf("(");
-    ability_debug(recipient->with_ability);
+    mtg_ability_debug(recipient->with_ability);
     printf(")");
   }
   printf(")");
 }
 
-  void
-recipient_free(struct Recipient *recipient)
+  extern void
+mtg_recipient_free(struct MtgRecipient *recipient)
 {
   if (recipient->text != NULL)
     free(recipient->text);
 
   if (recipient->with_ability != NULL)
-    ability_free(recipient->with_ability);
+    mtg_ability_free(recipient->with_ability);
 
   free(recipient);
 }

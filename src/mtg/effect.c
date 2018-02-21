@@ -4,20 +4,20 @@
 #include "effect.h"
 #include "recipient.h"
 
-  struct Effect *
+  static struct MtgEffect *
 init_effect()
 {
-  INIT_PTR(struct Effect, effect);
+  INIT_PTR(struct MtgEffect, effect);
 
   effect->recipient = NULL;
 
   return effect;
 }
 
-  struct Effect *
-effect_create_destroy(struct Recipient *recipient)
+  extern struct MtgEffect *
+mtg_effect_create_destroy(struct MtgRecipient *recipient)
 {
-  struct Effect *effect = init_effect();
+  struct MtgEffect *effect = init_effect();
 
   effect->recipient = recipient;
   effect->type = EFFECT_DESTROY;
@@ -25,10 +25,10 @@ effect_create_destroy(struct Recipient *recipient)
   return effect;
 }
 
-  struct Effect *
-effect_create_draw(int count)
+  extern struct MtgEffect *
+mtg_effect_create_draw(int count)
 {
-  struct Effect *effect = init_effect();
+  struct MtgEffect *effect = init_effect();
 
   effect->type = EFFECT_DRAW;
   effect->count = count;
@@ -36,10 +36,10 @@ effect_create_draw(int count)
   return effect;
 }
 
-  struct Effect *
-effect_create_sacrifice(struct Recipient *recipient)
+  extern struct MtgEffect *
+mtg_effect_create_sacrifice(struct MtgRecipient *recipient)
 {
-  struct Effect *effect = init_effect();
+  struct MtgEffect *effect = init_effect();
 
   effect->recipient = recipient;
   effect->type = EFFECT_SACRIFICE;
@@ -48,7 +48,7 @@ effect_create_sacrifice(struct Recipient *recipient)
 }
 
   static char *
-_debug_effect_type(enum EffectType type)
+_debug_effect_type(enum MtgEffectType type)
 {
   switch (type) {
   case EFFECT_DESTROY:
@@ -57,8 +57,8 @@ _debug_effect_type(enum EffectType type)
   }
 }
 
-  void
-effect_debug(struct Effect *effect)
+  extern void
+mtg_effect_debug(struct MtgEffect *effect)
 {
   printf("Effect(");
 
@@ -67,16 +67,16 @@ effect_debug(struct Effect *effect)
   if (effect->recipient == NULL)
     printf("<no recipient>");
   else
-    recipient_debug(effect->recipient);
+    mtg_recipient_debug(effect->recipient);
 
   printf(")");
 }
 
-  void
-effect_free(struct Effect *effect)
+  extern void
+mtg_effect_free(struct MtgEffect *effect)
 {
   if (effect->recipient != NULL)
-    recipient_free(effect->recipient);
+    mtg_recipient_free(effect->recipient);
 
   free(effect);
 }

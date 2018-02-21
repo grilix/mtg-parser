@@ -12,25 +12,25 @@
 
 extern int yylex(void);
 
-int yyerror(struct Card * card, char *s);
+int yyerror(struct MtgCard * card, char *s);
 %}
 
-%parse-param {struct Card * card}
+%parse-param {struct MtgCard * card}
 
 %token <string> NEWLINE SEMICOLON COLON DOT COMMA RECIPIENT TARGET THIS
 %token <string> DESTROY SACRIFICE DISCARD DRAW
-%token <r_char> MANA_COLOR
+%token <integer> MANA_COLOR
 %token <string> T_CAN T_BLOCK T_WITH
 %token <string> A_KEYWORD
 
 %union {
-  struct Rule *r_rule;
-  struct Recipient *r_recipient;
-  struct Effect *r_effect;
-  struct Ability *r_ability;
-  struct Cost *r_cost;
-  struct ReminderText *r_reminder;
-  char r_char;
+  struct MtgRule *r_rule;
+  struct MtgRecipient *r_recipient;
+  struct MtgEffect *r_effect;
+  struct MtgAbility *r_ability;
+  struct MtgCost *r_cost;
+  struct MtgReminderText *r_reminder;
+  int integer;
   char *string;
 }
 
@@ -50,7 +50,7 @@ rules: rule
 
 rule: abilities_list
     {
-      card_add_ability_set(card, $1);
+      mtg_card_add_ability_set(card, $1);
     }
     ;
 
@@ -70,7 +70,7 @@ abilities_list: abilities_list SEMICOLON ability NEWLINE
 ability: effect DOT
        {
          /* spell ability */
-         $$ = ability_create_spell($1);
+         $$ = mtg_ability_create_spell($1);
        }
        | keyword_ability
        {
@@ -84,29 +84,29 @@ ability: effect DOT
        | cost_list COLON effect DOT
        {
          /* activated ability */
-         $$ = ability_create_activated($1, $3);
+         $$ = mtg_ability_create_activated($1, $3);
        }
        /*
        | trigger COMMA ability NEWLINE
        {
-         $$ = ability_create_triggered($1, $3);
+         $$ = mtg_ability_create_triggered($1, $3);
        }
        */
        ;
 
 keyword_ability: A_KEYWORD
                {
-                 $$ = ability_create_keyword($1);
+                 $$ = mtg_ability_create_keyword($1);
                }
                | keyword_ability mana
                {
-                 ability_add_cost($1, $2);
+                 mtg_ability_add_cost($1, $2);
                  $$ = $1;
                }
                | keyword_ability '(' reminder_text DOT ')'
                | keyword_ability '(' reminder_text ')'
                {
-                 ability_add_reminder_text($$, $3);
+                 mtg_ability_add_reminder_text($$, $3);
                }
                | keyword_ability COMMA keyword_ability
                {
@@ -118,13 +118,13 @@ keyword_ability: A_KEYWORD
 
 reminder_text: ability
              {
-               $$ = reminder_text_create_ability($1);
+               $$ = mtg_reminder_text_create_ability($1);
              }
              ;
 
 static_ability: recipient T_CAN T_BLOCK recipient
               {
-                $$ = ability_create_static_can_block($4);
+                $$ = mtg_ability_create_static_can_block($4);
               }
               | static_ability COMMA static_ability
               {
@@ -160,59 +160,63 @@ cost: sacrifice
 
 sacrifice: SACRIFICE recipient
          {
-          $$ = cost_create_sacrifice($2);
+          $$ = mtg_cost_create_sacrifice($2);
          }
          ;
 
 discard: DISCARD recipient
        {
-         $$ = cost_create_discard($2);
+         $$ = mtg_cost_create_discard($2);
        }
        ;
 
 mana: MANA_COLOR
     {
-      $$ = cost_create_mana($1);
+      $$ = mtg_cost_create_mana($1);
+    }
+    | MANA_COLORLESS
+    {
+      $$ = mtg_cost_create_mana('R');
     }
     ;
 
 
 effect: DESTROY recipient
       {
-        $$ = effect_create_destroy($2);
+        $$ = mtg_effect_create_destroy($2);
       }
       | DRAW 'a' RECIPIENT /* TODO: "a card" */
       {
-        $$ = effect_create_draw(1);
+        $$ = mtg_effect_create_draw(1);
       }
       ;
 
 recipient: TARGET RECIPIENT
          {
-           $$ = recipient_create(RECIPIENT_TARGET, $2);
+           $$ = mtg_recipient_create(RECIPIENT_TARGET, $2);
          }
          | RECIPIENT
          {
-           $$ = recipient_create(RECIPIENT_SIMPLE, $1);
+           $$ = mtg_recipient_create(RECIPIENT_SIMPLE, $1);
          }
          | THIS RECIPIENT
          {
-           $$ = recipient_create(RECIPIENT_SELF, $2);
+           $$ = mtg_recipient_create(RECIPIENT_SELF, $2);
          }
          | 'a' RECIPIENT
          {
-           $$ = recipient_create(RECIPIENT_SIMPLE, $2);
+           $$ = mtg_recipient_create(RECIPIENT_SIMPLE, $2);
          }
          | recipient T_WITH keyword_ability
          {
-           recipient_add_ability($1, $3);
+           mtg_recipient_add_ability($1, $3);
            $$ = $1;
          }
          ;
 
 %%
 
-int yyerror(struct Card *card, char *msg)
+int yyerror(struct MtgCard *card, char *msg)
 {
   return 1; //fprintf(stderr, "YACC: %s.\n", msg);
 }

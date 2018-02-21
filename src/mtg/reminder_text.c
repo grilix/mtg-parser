@@ -5,29 +5,29 @@
 #include "../common.h"
 #include "reminder_text.h"
 
-  struct ReminderText *
-reminder_text_create_ability(struct Ability *ability)
+  extern struct MtgReminderText *
+mtg_reminder_text_create_ability(struct MtgAbility *ability)
 {
-  INIT_PTR(struct ReminderText, reminder);
+  INIT_PTR(struct MtgReminderText, reminder);
   reminder->ability = ability;
 
   return reminder;
 }
 
-  void
-reminder_text_debug(struct ReminderText *reminder_text)
+  extern void
+mtg_reminder_text_debug(struct MtgReminderText *reminder_text)
 {
   if (reminder_text->ability == NULL)
     printf("<no ability>");
   else
-    ability_debug(reminder_text->ability);
+    mtg_ability_debug(reminder_text->ability);
 }
 
-  void
-reminder_text_free(struct ReminderText *reminder_text)
+  extern void
+mtg_reminder_text_free(struct MtgReminderText *reminder_text)
 {
   if (reminder_text->ability != NULL)
-    ability_free(reminder_text->ability);
+    mtg_ability_free(reminder_text->ability);
 
   free(reminder_text);
 }
