@@ -6,7 +6,7 @@ mtg_card_init(void)
 {
   INIT_PTR(struct MtgCard, card);
 
-  card->last_rule = 0;
+  card->last_rule = NULL;
 
   return card;
 }

@@ -1,4 +1,5 @@
 /magic-parser
+/test/test
 *.o
 /parser/*.c
 /parser/*.h

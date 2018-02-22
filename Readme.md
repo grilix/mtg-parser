@@ -13,11 +13,17 @@ let me know if you can help me make the code better.
 
     $ make
 
-## Test
+## Testing
 
-    $ echo "Destroy target creature." | ./magic-parser
-    -- # or
-    $ make && scripts/test.sh
+  Testing is being done with
+  [CUnit](http://cunit.sourceforge.net/doc/index.html).
+
+  On Gentoo: `emerge dev-util/cunit`.
+  On Fedora: `dnf install CUnit-devel` (probably).
+
+  Then just:
+
+    $ make test
 
 ## Text support
 
