@@ -51,9 +51,6 @@ mtg_recipient_create(enum MtgRecipientFlag flag, char *text);
 mtg_recipient_add_ability(struct MtgRecipient *recipient, struct MtgAbility *ability);
 
   extern void
-mtg_recipient_debug(struct MtgRecipient *recipient);
-
-  extern void
 mtg_recipient_free(struct MtgRecipient *recipient);
 
 #endif

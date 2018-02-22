@@ -1,9 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "../common.h"
 #include "card.h"
-#include "rule.h"
 
   extern struct MtgCard *
 mtg_card_init(void)
@@ -34,19 +30,6 @@ mtg_card_add_ability_set(struct MtgCard *card, struct MtgAbility *last_ability)
 {
   mtg_card_add_rule(card, mtg_rule_init());
   card->last_rule->last_ability = last_ability;
-}
-
-  extern void
-mtg_card_debug(struct MtgCard *card)
-{
-  printf("Card(");
-
-  if (card->last_rule == NULL)
-    printf("<no rules>");
-  else
-    mtg_rule_debug(card->last_rule);
-
-  printf(")");
 }
 
   extern void

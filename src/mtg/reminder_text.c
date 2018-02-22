@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "../common.h"
 #include "reminder_text.h"
 
@@ -12,15 +8,6 @@ mtg_reminder_text_create_ability(struct MtgAbility *ability)
   reminder->ability = ability;
 
   return reminder;
-}
-
-  extern void
-mtg_reminder_text_debug(struct MtgReminderText *reminder_text)
-{
-  if (reminder_text->ability == NULL)
-    printf("<no ability>");
-  else
-    mtg_ability_debug(reminder_text->ability);
 }
 
   extern void

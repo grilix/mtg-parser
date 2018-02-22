@@ -1,11 +1,7 @@
-#include <stdio.h>
 #include <string.h>
 
 #include "../common.h"
-#include "effect.h"
 #include "ability.h"
-#include "cost.h"
-#include "recipient.h"
 
   static struct MtgAbility *
 init_ability(void)
@@ -92,42 +88,6 @@ mtg_ability_add_cost(struct MtgAbility *ability,
                  struct MtgCost *cost)
 {
   APPEND(ability->cost, cost);
-}
-
-  extern void
-mtg_ability_debug(struct MtgAbility *last_ability)
-{
-  if (last_ability->prev != NULL) {
-    mtg_ability_debug(last_ability->prev);
-    printf(",");
-  }
-
-  printf("Ability(");
-
-  {
-    if (last_ability->cost == NULL)
-    {
-      if (last_ability->type == ABILITY_ACTIVATED)
-        printf("<no cost>,");
-    }
-    else
-    {
-      mtg_cost_debug(last_ability->cost);
-      printf(",");
-    }
-  }
-
-  if (last_ability->type == ABILITY_KEYWORD)
-    printf("%s", last_ability->keyword);
-  else
-  {
-    if (last_ability->effect == NULL)
-      printf("<no effect>");
-    else
-      mtg_effect_debug(last_ability->effect);
-  }
-
-  printf(")");
 }
 
   extern void

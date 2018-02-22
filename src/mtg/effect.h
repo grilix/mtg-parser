@@ -6,6 +6,8 @@
 #ifndef EFFECT_H
 #define EFFECT_H
 
+#include "recipient.h"
+
 enum MtgEffectType
 {
   MTG_EFFECT_DESTROY,
@@ -30,9 +32,6 @@ mtg_effect_create_draw(int count);
 
   extern struct MtgEffect *
 mtg_effect_create_sacrifice(struct MtgRecipient *recipient);
-
-  extern void
-mtg_effect_debug(struct MtgEffect *effect);
 
   extern void
 mtg_effect_free(struct MtgEffect *effect);

@@ -3,6 +3,7 @@
 #include "common.h"
 #include "mtg/rule.h"
 #include "mtg/card.h"
+#include "mtg/debug.h"
 #include "syntax.h"
 
   extern int

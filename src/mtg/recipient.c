@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 
 #include "../common.h"
@@ -29,35 +28,6 @@ mtg_recipient_create(enum MtgRecipientFlag flag, char *text)
 mtg_recipient_add_ability(struct MtgRecipient *recipient, struct MtgAbility *ability)
 {
   APPEND(recipient->with_ability, ability);
-}
-
-  static char *
-_debug_recipient_flag(enum MtgRecipientFlag flag)
-{
-  switch (flag)
-  {
-  case MTG_RECIPIENT_TARGET:
-    return "target:";
-  }
-
-  return "";
-}
-
-  extern void
-mtg_recipient_debug(struct MtgRecipient *recipient)
-{
-  printf("Recipient(%s", _debug_recipient_flag(recipient->flag));
-
-  if (recipient->text != NULL)
-    printf("%s", recipient->text);
-
-  if (recipient->with_ability != NULL)
-  {
-    printf("(");
-    mtg_ability_debug(recipient->with_ability);
-    printf(")");
-  }
-  printf(")");
 }
 
   extern void

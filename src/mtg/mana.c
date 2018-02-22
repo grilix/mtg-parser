@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "mana.h"
 #include "../common.h"
+#include "mana.h"
 
   static struct MtgMana *
 init_mana(void)
@@ -51,45 +49,6 @@ mtg_mana_create_from_string(char *text)
   mana->amount = amount;
 
   return mana;
-}
-
-  static int
-mana_is(struct MtgMana *mana, enum MtgManaType type)
-{
-  return (mana->type & type) == type;
-}
-
-  extern void
-mtg_mana_debug(struct MtgMana *mana)
-{
-  if (mana->prev != NULL)
-  {
-    mtg_mana_debug(mana->prev);
-    printf(",");
-  }
-
-  printf("Mana(");
-  if (mana_is(mana, MTG_MANA_COLORLESS))
-  {
-    if (mana_is(mana, MTG_MANA_X))
-      printf("X");
-    else
-      printf("%d", mana->amount);
-  }
-  else
-  {
-    if (mana_is(mana, MTG_MANA_WHITE))
-      printf("W");
-    if (mana_is(mana, MTG_MANA_BLUE))
-      printf("U");
-    if (mana_is(mana, MTG_MANA_BLACK))
-      printf("B");
-    if (mana_is(mana, MTG_MANA_RED))
-      printf("R");
-    if (mana_is(mana, MTG_MANA_GREEN))
-      printf("G");
-  }
-  printf(")");
 }
 
   extern void

@@ -1,8 +1,5 @@
-#include <stdio.h>
-
 #include "../common.h"
 #include "effect.h"
-#include "recipient.h"
 
   static struct MtgEffect *
 init_effect()
@@ -45,36 +42,6 @@ mtg_effect_create_sacrifice(struct MtgRecipient *recipient)
   effect->type = MTG_EFFECT_SACRIFICE;
 
   return effect;
-}
-
-  static char *
-_debug_effect_type(enum MtgEffectType type)
-{
-  switch (type) {
-  case MTG_EFFECT_DESTROY:
-    printf("destroy:");
-    break;
-  }
-}
-
-  extern void
-mtg_effect_debug(struct MtgEffect *effect)
-{
-  printf("Effect(");
-
-  _debug_effect_type(effect->type);
-
-  if (effect->type == MTG_EFFECT_DRAW)
-    printf("draw:%d", effect->count);
-  else
-  {
-    if (effect->recipient == NULL)
-      printf("<no recipient>");
-    else
-      mtg_recipient_debug(effect->recipient);
-  }
-
-  printf(")");
 }
 
   extern void

@@ -25,9 +25,6 @@ struct MtgMana
 mtg_mana_create_from_string(char *color);
 
   extern void
-mtg_mana_debug(struct MtgMana *mana);
-
-  extern void
 mtg_mana_free(struct MtgMana *mana);
 
 #endif

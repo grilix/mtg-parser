@@ -4,6 +4,7 @@
 #include "effect.h"
 #include "cost.h"
 #include "reminder_text.h"
+#include "recipient.h"
 
 enum MtgAbilityType
 {
@@ -49,9 +50,6 @@ mtg_ability_add_reminder_text(struct MtgAbility *ability,
   extern void
 mtg_ability_add_cost(struct MtgAbility *ability,
                  struct MtgCost *cost);
-
-  extern void
-mtg_ability_debug(struct MtgAbility *last_ability);
 
   extern void
 mtg_ability_free(struct MtgAbility *last_ability);

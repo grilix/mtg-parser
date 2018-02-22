@@ -1,8 +1,8 @@
 #ifndef COST_H
 #define COST_H
 
-#include "types.h"
 #include "mana.h"
+#include "recipient.h"
 
 enum MtgCostType
 {
@@ -33,9 +33,6 @@ mtg_cost_create_discard(struct MtgRecipient *recipient);
 
   extern struct MtgCost *
 mtg_cost_create_tap(void);
-
-  extern void
-mtg_cost_debug(struct MtgCost *cost);
 
   extern void
 mtg_cost_free(struct MtgCost *cost);
