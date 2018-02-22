@@ -16,12 +16,12 @@ let me know if you can help me make the code better.
 ## Test
 
     $ echo "Destroy target creature." | ./magic-parser
-
-Or use the script to automate it:
-
+    -- # or
     $ make && scripts/test.sh
 
-    # ...
+## Text support
+
+The current output for `scripts/test.sh` is:
 
     * Destroy target creature.
     -> Card(Rule(Ability(Effect(destroy:Recipient(target:creature)))))
@@ -35,6 +35,9 @@ Or use the script to automate it:
     * Flying, haste
     -> Card(Rule(Ability(Flying),Ability(haste)))
 
+    * {X}{2}{U}: Draw a card.
+    -> Card(Rule(Ability(Cost(Mana(X),Mana(2),Mana(U)),Effect(draw:1))))
+
     * Reach (This creature can block creatures with flying.)
     -> Card(Rule(Ability(Reach)))
 
@@ -42,15 +45,26 @@ Or use the script to automate it:
     -> Card(Rule(Ability(Effect(destroy:Recipient(target:creature(Ability(flying)))))))
 
     * Cycling {R} ({R}, Discard this card: Draw a card.)
-    -> Card(Rule(Ability(Cost(R),Cycling)))
+    -> Card(Rule(Ability(Cost(Mana(R)),Cycling)))
+
+    * {1}{W}, {T}, Discard a card: Put a 1/1 white Human Soldier creature token onto the battlefield.
+    Syntax error:
+    1:{1}{W}, {T}, Discard a card: P
 
     * When Gravedigger enters the battlefield, you may return target creature card from your graveyard to your hand.
     Syntax error:
     1:W
-
 
 ## TODO
 
 - Implement it.
 - Test it (with actual tests).
 - Feed it with a set of real card texts.
+
+## More information
+
+Here are some links to have around:
+
+- http://mtg.wikia.com/wiki/Target
+- http://mtg.wikia.com/wiki/Category:Mechanics
+- http://mtg.wikia.com/wiki/Ability_Words

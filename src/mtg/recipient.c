@@ -36,7 +36,7 @@ _debug_recipient_flag(enum MtgRecipientFlag flag)
 {
   switch (flag)
   {
-  case RECIPIENT_TARGET:
+  case MTG_RECIPIENT_TARGET:
     return "target:";
   }
 

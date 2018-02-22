@@ -2,20 +2,21 @@
 #define COST_H
 
 #include "types.h"
-#include "cost.h"
+#include "mana.h"
 
 enum MtgCostType
 {
-  COST_SACRIFICE,
-  COST_DISCARD,
-  COST_MANA
+  MTG_COST_SACRIFICE,
+  MTG_COST_DISCARD,
+  MTG_COST_MANA,
+  MTG_COST_TAP
 };
 
 struct MtgCost
 {
   enum MtgCostType type;
   struct MtgRecipient *recipient;
-  enum MtgColor color;
+  struct MtgMana *mana;
 
   struct MtgCost *prev;
   struct MtgCost *next;
@@ -25,10 +26,13 @@ struct MtgCost
 mtg_cost_create_sacrifice(struct MtgRecipient *recipient);
 
   extern struct MtgCost *
-mtg_cost_create_mana(enum MtgColor color);
+mtg_cost_create_mana(struct MtgMana *mana);
 
   extern struct MtgCost *
 mtg_cost_create_discard(struct MtgRecipient *recipient);
+
+  extern struct MtgCost *
+mtg_cost_create_tap(void);
 
   extern void
 mtg_cost_debug(struct MtgCost *cost);

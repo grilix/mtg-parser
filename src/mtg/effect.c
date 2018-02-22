@@ -20,7 +20,7 @@ mtg_effect_create_destroy(struct MtgRecipient *recipient)
   struct MtgEffect *effect = init_effect();
 
   effect->recipient = recipient;
-  effect->type = EFFECT_DESTROY;
+  effect->type = MTG_EFFECT_DESTROY;
 
   return effect;
 }
@@ -30,7 +30,7 @@ mtg_effect_create_draw(int count)
 {
   struct MtgEffect *effect = init_effect();
 
-  effect->type = EFFECT_DRAW;
+  effect->type = MTG_EFFECT_DRAW;
   effect->count = count;
 
   return effect;
@@ -42,7 +42,7 @@ mtg_effect_create_sacrifice(struct MtgRecipient *recipient)
   struct MtgEffect *effect = init_effect();
 
   effect->recipient = recipient;
-  effect->type = EFFECT_SACRIFICE;
+  effect->type = MTG_EFFECT_SACRIFICE;
 
   return effect;
 }
@@ -51,7 +51,7 @@ mtg_effect_create_sacrifice(struct MtgRecipient *recipient)
 _debug_effect_type(enum MtgEffectType type)
 {
   switch (type) {
-  case EFFECT_DESTROY:
+  case MTG_EFFECT_DESTROY:
     printf("destroy:");
     break;
   }
@@ -64,10 +64,15 @@ mtg_effect_debug(struct MtgEffect *effect)
 
   _debug_effect_type(effect->type);
 
-  if (effect->recipient == NULL)
-    printf("<no recipient>");
+  if (effect->type == MTG_EFFECT_DRAW)
+    printf("draw:%d", effect->count);
   else
-    mtg_recipient_debug(effect->recipient);
+  {
+    if (effect->recipient == NULL)
+      printf("<no recipient>");
+    else
+      mtg_recipient_debug(effect->recipient);
+  }
 
   printf(")");
 }

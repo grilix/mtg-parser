@@ -3,7 +3,7 @@
 e() {
   COLOR=$1
   shift
-  echo -en "\e[1;${COLOR}m$@\e[0;0m"
+  echo -en "\e[38;5;${COLOR}m$@\e[0;0m"
 }
 
 test-card() {
@@ -12,11 +12,11 @@ test-card() {
   RESULT=$(echo -e "$1" | ./magic-parser 2>&1)
 
   if [ $? == 0 ]; then
-    echo -e "$(e 32 "*") $(e 1 $1)"
+    echo -e "$(e 14 "*") $(e 30 $1)"
     echo " -> $(e 34 "${RESULT}")"
   else
-    echo -e "$(e 31 "*") $(e 1 $1)"
-    echo " $(e 35 "${RESULT}")"
+    echo -e "$(e 125 "*") $(e 66 $1)"
+    echo " $(e 1 "${RESULT}")"
   fi
 }
 
@@ -26,6 +26,7 @@ test-card "Destroy target artifact."
 #test-card "Destroy target creature.\nDestroy target artifact."
 test-card "Reach"
 test-card "Flying, haste"
+test-card "{X}{2}{U}: Draw a card."
 
 ### Some real world examples
 
@@ -42,6 +43,8 @@ test-card "Reach (This creature can block creatures with flying.)"
 test-card "Destroy target creature with flying."
 # Desert Cerodon
 test-card "Cycling {R} ({R}, Discard this card: Draw a card.)"
+# Thraben Standard Bearer
+test-card "{1}{W}, {T}, Discard a card: Put a 1/1 white Human Soldier creature token onto the battlefield."
 # Gravedigger
 test-card "When Gravedigger enters the battlefield, you may return target creature card from your graveyard to your hand."
 # Rabid Bite
