@@ -1,6 +1,10 @@
 %{
 #include <stdio.h>
 
+#include "../src/input.h"
+#include "parse.h"
+#include "scan.h"
+
 #include "../src/mtg/card.h"
 #include "../src/mtg/rule.h"
 #include "../src/mtg/recipient.h"
@@ -9,14 +13,17 @@
 #include "../src/mtg/cost.h"
 #include "../src/mtg/reminder_text.h"
 #include "../src/mtg/mana.h"
-#include "../src/syntax.h"
+#include "../src/input.h"
 
-extern int yylex(void);
-
-int yyerror(struct MtgCard * card, char *s);
+void yyerror (yyscan_t *scanner, struct Input *in, char const *msg);
 %}
 
-%parse-param {struct MtgCard * card}
+%define api.pure full
+%lex-param {void *scanner}
+%parse-param {void *scanner}{struct Input *in}
+
+%define parse.trace
+%define parse.error verbose
 
 %token <string> NEWLINE SEMICOLON COLON DOT COMMA RECIPIENT TARGET THIS
 %token <string> DESTROY SACRIFICE DISCARD DRAW
@@ -56,7 +63,7 @@ rules
 rule
   : abilities_list
   {
-    mtg_card_add_ability_set(card, $1);
+    mtg_card_add_ability_set(in->card, $1);
   }
   ;
 
@@ -113,6 +120,9 @@ keyword_ability
     $$ = $1;
   }
   | keyword_ability '(' reminder_text DOT ')'
+  {
+    mtg_ability_add_reminder_text($$, $3);
+  }
   | keyword_ability '(' reminder_text ')'
   {
     mtg_ability_add_reminder_text($$, $3);
@@ -251,7 +261,7 @@ recipient
 
 %%
 
-int yyerror(struct MtgCard *card, char *msg)
+void yyerror (yyscan_t *locp, struct Input *in, char const *msg)
 {
-  return 1; //fprintf(stderr, "YACC: %s.\n", msg);
+  return; //fprintf(stderr, "YACC: %s.\n", msg);
 }

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <CUnit/CUnit.h>
 
-#include "test_mtg_mana.h"
 #include "../../src/mtg/mana.h"
 
   static void

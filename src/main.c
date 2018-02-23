@@ -4,32 +4,56 @@
 #include "mtg/rule.h"
 #include "mtg/card.h"
 #include "mtg/debug.h"
-#include "syntax.h"
+#include "input.h"
 
-  extern int
-yyparse(struct MtgCard *current_card);
+#include "../parser/parse.h"
+#include "../parser/scan.h"
 
-  int
-main(void)
+  static void
+print_result(int parse_result, struct Input *in)
 {
-  struct MtgCard *card = mtg_card_init();
-  int parse_result;
-
-  init_syntax_checks();
-
-  parse_result = yyparse(card);
-
   if (parse_result == 0)
   {
-    mtg_card_debug(card);
+    mtg_card_debug(in->card);
     printf("\n");
   }
   else
-    debug_syntax_error();
+    debug_syntax_error(in);
+}
 
-  free_syntax_checks();
+  int
+main(int argc, char **argv)
+{
+  int parse_result;
+  struct Input *in;
 
-  mtg_card_free(card);
+  if (argc > 1)
+  {
+    for (int i = 1; i < argc; i++)
+    {
+      in = input_from_str(argv[i]);
+      in->card = mtg_card_init();
+
+      parse_result = perform_parse(in);
+      print_result(parse_result, in);
+
+      mtg_card_free(in->card);
+      input_destroy(in);
+      printf("\n");
+    }
+
+    // TODO: return errors.
+    return 0;
+  }
+
+  in = input_from_stdin();
+  in->card = mtg_card_init();
+
+  parse_result = perform_parse(in);
+  print_result(parse_result, in);
+
+  mtg_card_free(in->card);
+  input_destroy(in);
 
   return parse_result == 0 ? 0 : 1;
 }

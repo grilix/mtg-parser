@@ -1,15 +1,16 @@
 %{
-#include "../src/mtg/card.h"
-#include "../src/syntax.h"
 #include "parse.h"
+#include "../src/mtg/card.h"
+#include "../src/input.h"
 
-extern char *yytext;
-char *mana(char *text);
-
-#define STR(T) push_token(yytext); yylval.string = yytext; return T
-#define STR_V(T,V) push_token(yytext); yylval.string = V; return T
-#define INT(T,V) push_token(yytext); yylval.integer = V; return T
+#define STR(T) push_token(yyextra, yytext); yylval->string = yytext; return T
+#define STR_V(T,V) push_token(yyextra, yytext); yylval->string = V; return T
+#define INT(T,V) push_token(yyextra, yytext); yylval->integer = V; return T
 %}
+
+%option reentrant bison-bridge noyywrap nodefault
+%option header-file="parser/scan.h"
+
 %%
 
 ":" { STR(COLON); }
@@ -44,8 +45,8 @@ can { STR(T_CAN); }
 block { STR(T_BLOCK); }
 with { STR(T_WITH); }
 
-[ \t] { push_token(yytext); }
-\n { push_newline(); return NEWLINE; }
-. { push_token(yytext); return yytext[0]; }
+[ \t] { push_token(yyextra, yytext); }
+\n { push_newline(yyextra); return NEWLINE; }
+. { push_token(yyextra, yytext); return yytext[0]; }
 
 %%

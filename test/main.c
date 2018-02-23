@@ -1,10 +1,11 @@
 #include <CUnit/Basic.h>
-#include "mtg/test_mtg_card.h"
-#include "mtg/test_mtg_ability.h"
-#include "mtg/test_mtg_mana.h"
 
-  int
-load_suite_result(int result, char *name)
+extern int setup_card_suite();
+extern int setup_ability_suite();
+extern int setup_mana_suite();
+extern int setup_input_suite();
+
+int load_suite_result(int result, char *name)
 {
   if (result == CUE_SUCCESS)
     return 1;
@@ -32,6 +33,9 @@ int main()
     return CU_get_error();
 
   if (!load_suite_result(setup_mana_suite(), "MtgMana"))
+    return CU_get_error();
+
+  if (!load_suite_result(setup_input_suite(), "Input"))
     return CU_get_error();
 
   CU_basic_set_mode(CU_BRM_VERBOSE);
