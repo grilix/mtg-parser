@@ -12,9 +12,25 @@ init_ability(void)
   ability->keyword = NULL;
   ability->reminder_text = NULL;
   ability->effect = NULL;
+  ability->source = NULL;
   ability->can_block_recipient = NULL;
   ability->next = NULL;
   ability->prev = NULL;
+
+  return ability;
+}
+
+  extern struct MtgAbility *
+mtg_ability_from_static_keyword(char *keyword)
+{
+  int pos = search_string(staticAbilities, keyword);
+
+  if (pos < 0)
+    return NULL;
+
+  struct MtgAbility *ability = init_ability();
+
+  ability->type = ABILITY_STATIC;
 
   return ability;
 }
@@ -107,6 +123,9 @@ mtg_ability_free(struct MtgAbility *last_ability)
 
   if (last_ability->reminder_text != NULL)
     mtg_reminder_text_free(last_ability->reminder_text);
+
+  if (last_ability->source != NULL)
+    mtg_recipient_free(last_ability->source);
 
   if (last_ability->can_block_recipient != NULL)
     mtg_recipient_free(last_ability->can_block_recipient);

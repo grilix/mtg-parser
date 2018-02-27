@@ -35,4 +35,6 @@
     I->prev = NULL; \
   L = I;
 
+  extern int
+search_string(const char **list, char *string);
 #endif

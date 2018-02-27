@@ -22,10 +22,13 @@
 \{[RWBUG]\} { STR(MANA_COLOR); }
 \{[0-9]+\} { STR(MANA_COLORLESS); }
 
-[Rr]each { STR(A_KEYWORD); }
-[Ff]lying { STR(A_KEYWORD); }
-[Hh]aste { STR(A_KEYWORD); }
-[Cc]ycling { STR(A_KEYWORD); }
+  /* Static abilities keywords */
+[Rr]each { STR(TOK_STATIC_KEYWORD); }
+[Ff]lying { STR(TOK_STATIC_KEYWORD); }
+[Hh]aste { STR(TOK_STATIC_KEYWORD); }
+
+  /* Activated abilities keywords */
+[Cc]ycling { STR(TOK_ACTIVATED_KEYWORD); }
 
 Destroy { STR(DESTROY); }
 Sacrifice { STR(SACRIFICE); }

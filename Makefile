@@ -1,4 +1,4 @@
-YACC    = bison -y
+YACC = bison -y
 YFLAGS  = -d
 LEX = flex
 
@@ -10,7 +10,7 @@ mtg_obj = $(mtg_src:%.c=%.o)
 test_mtg_src = $(wildcard test/mtg/*.c)
 test_src = $(wildcard test/*.c)
 test_obj = $(test_src:%.c=%.o) $(test_mtg_src:%.c=%.o)
-app_obj = src/input.o
+app_obj = src/input.o src/common.o
 
 name = magic-parser
 test_name = test/test

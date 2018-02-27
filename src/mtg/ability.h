@@ -22,11 +22,17 @@ struct MtgAbility
   char *keyword;
   struct MtgEffect *effect;
   struct MtgReminderText *reminder_text;
+  struct MtgRecipient *source;
   struct MtgRecipient *can_block_recipient;
 
   struct MtgAbility *prev;
   struct MtgAbility *next;
 };
+
+extern const char *staticAbilities[];
+
+  extern struct MtgAbility *
+mtg_ability_from_static_keyword(char *keyword);
 
   extern struct MtgAbility *
 mtg_ability_create_spell(struct MtgEffect *effect);

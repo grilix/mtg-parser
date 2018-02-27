@@ -63,14 +63,11 @@ mtg_cost_free(struct MtgCost *cost)
   if (cost->prev != NULL)
     mtg_cost_free(cost->prev);
 
+  if (cost->recipient != NULL)
+    mtg_recipient_free(cost->recipient);
+
   if (cost->mana != NULL)
     mtg_mana_free(cost->mana);
 
-  switch (cost->type)
-  {
-    case MTG_COST_SACRIFICE:
-      if (cost->recipient != NULL)
-        mtg_recipient_free(cost->recipient);
-      break;
-  }
+  free(cost);
 }

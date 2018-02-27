@@ -4,6 +4,7 @@ extern int setup_card_suite();
 extern int setup_ability_suite();
 extern int setup_mana_suite();
 extern int setup_input_suite();
+extern int setup_common_suite();
 
 int load_suite_result(int result, char *name)
 {
@@ -25,6 +26,9 @@ int main()
     fprintf(stderr, "Can't initialize the registry.\n");
     return CU_get_error();
   }
+
+  if (!load_suite_result(setup_common_suite(), "Common"))
+    return CU_get_error();
 
   if (!load_suite_result(setup_card_suite(), "MtgCard"))
     return CU_get_error();

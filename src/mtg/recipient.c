@@ -33,11 +33,11 @@ mtg_recipient_add_ability(struct MtgRecipient *recipient, struct MtgAbility *abi
   extern void
 mtg_recipient_free(struct MtgRecipient *recipient)
 {
-  if (recipient->text != NULL)
-    free(recipient->text);
-
   if (recipient->with_ability != NULL)
     mtg_ability_free(recipient->with_ability);
+
+  if (recipient->text != NULL)
+    free(recipient->text);
 
   free(recipient);
 }

@@ -31,6 +31,8 @@ void yyerror (yyscan_t *scanner, struct Input *in, char const *msg);
 %token <string> T_CAN T_BLOCK T_WITH
 %token <string> A_KEYWORD
 
+%token <string> TOK_STATIC_KEYWORD TOK_ACTIVATED_KEYWORD
+
 %union {
   struct MtgRule *r_rule;
   struct MtgRecipient *r_recipient;
@@ -110,8 +112,13 @@ ability
   ;
 
 keyword_ability
-  : A_KEYWORD
+  /*: A_KEYWORD*/
+  /*{*/
+    /*$$ = mtg_ability_create_keyword($1);*/
+  /*}*/
+  : TOK_STATIC_KEYWORD
   {
+    //$$ = mtg_ability_from_static_keyword($1);
     $$ = mtg_ability_create_keyword($1);
   }
   | keyword_ability mana
@@ -146,6 +153,7 @@ static_ability
   : recipient T_CAN T_BLOCK recipient
   {
     $$ = mtg_ability_create_static_can_block($4);
+    $$->source = $1;
   }
   | static_ability COMMA static_ability
   {

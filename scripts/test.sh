@@ -33,6 +33,7 @@ test-card "{X}{2}{U}: Draw a card."
 ## Static abilities
 # Giant Spider
 test-card "Reach (This creature can block creatures with flying.)"
+
 # Vampire Nighthawk
 #test-card "Flying\nDeathtouch (Any amount of damage this deals to a creature is enough to destroy it.)\nLifelink (Damage dealt by this creature also causes you to gain that much life.)"
 
